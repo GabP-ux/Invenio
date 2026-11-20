@@ -1,143 +1,180 @@
 import { useMemo, useRef, useState, useEffect } from 'preact/hooks'
-import { cards, index, byId, principleById, areaById, subById, areaColor } from '../data'
+import { cards, byId, principleById, areaById, subById, index } from '../data'
 import { state } from '../store'
 import { routeReplace } from '../router'
+import { graphData, simulate, declutter, clusters, clusterColor } from './mapLayout'
+import { Map3D } from './Map3D'
 
+const KMIN = 0.2, KMAX = 2.6
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v))
+const now = () => performance.now()
 
-// Disposizione a gruppi: ogni principio al centro del suo gruppo, le tecnologie in cerchio intorno.
-// Le linee principio → tecnologia restano corte e dentro il gruppo, così non attraversano altri nodi.
-function layout (principles, cardNodes) {
-  const pos = {}
-  const groups = principles.map(p => ({ p, items: cardNodes.filter(n => n.principle === p.id) }))
-    .sort((a, b) => b.items.length - a.items.length)
-  const [first, ...rest] = groups
-  const R = Math.max(430, rest.length * 66)
-  const place = (g, cx, cy, outward) => {
-    pos[g.p.id] = { x: cx, y: cy }
-    const n = g.items.length
-    const r = n <= 1 ? 115 : n <= 2 ? 125 : 150
-    const span = n <= 1 ? 0 : Math.min(Math.PI * 1.6, n * 0.9)
-    g.items.forEach((it, i) => {
-      const a = n === 1 ? outward : (n >= 4 ? outward + (i / n) * Math.PI * 2 : outward - span / 2 + (span / (n - 1)) * i)
-      pos[it.id] = { x: cx + Math.cos(a) * r, y: cy + Math.sin(a) * r * 0.8 }
-    })
+function useMapData () {
+  return useMemo(() => {
+    const g = graphData()
+    g.principles.forEach(n => { n.w = n.label.length * 7.4 + 30; n.h = 34 })
+    g.cardNodes.forEach(n => { n.w = n.label.length * 7 + 26; n.h = 32 })
+    const pos = declutter(g.nodes, simulate(g, 2))
+    const cl = clusters(g.principles, pos).map(c => ({ ...c, color: clusterColor(c.members) }))
+    let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity
+    g.nodes.forEach(n => { const p = pos[n.id]; x0 = Math.min(x0, p.x - n.w / 2); x1 = Math.max(x1, p.x + n.w / 2); y0 = Math.min(y0, p.y - n.h / 2); y1 = Math.max(y1, p.y + n.h / 2) })
+    return { ...g, pos, cl, box: { x0, y0, x1, y1 } }
+  }, [cards.value.length])
+}
+
+function Graph ({ selected, onSelect }) {
+  const { nodes, edges, pos, cl, box } = useMapData()
+  const wrap = useRef(); const gRef = useRef()
+  const view = useRef({ x: 0, y: 0, k: 0.85 })
+  const raf = useRef(0); const anim = useRef(null)
+  const ptr = useRef(new Map()); const gest = useRef({}); const moved = useRef(false)
+  const vel = useRef({ x: 0, y: 0, t: 0 }); const lastTap = useRef(0); const pending = useRef(false)
+
+  const apply = () => {
+    const v = view.current, g = gRef.current, el = wrap.current; if (!g || !el) return
+    g.setAttribute('transform', `translate(${v.x.toFixed(2)} ${v.y.toFixed(2)}) scale(${v.k.toFixed(4)})`)
+    el.style.backgroundPosition = `${v.x}px ${v.y}px`; el.style.backgroundSize = `${96 * v.k}px ${96 * v.k}px`
+    const far = v.k < 0.5; el.classList.toggle('far', far)
+    el.style.setProperty('--inv', far ? clamp(0.46 / v.k, 1, 2.2).toFixed(3) : 1)
   }
-  place(first, 0, 0, -Math.PI / 2)
-  rest.forEach((g, i) => {
-    const a = -Math.PI / 2 + (i / rest.length) * Math.PI * 2
-    place(g, Math.cos(a) * R, Math.sin(a) * R * 0.85, a)
-  })
-  // separazione finale: se due etichette si sovrappongono, si allontanano un poco
-  const all = [...principles, ...cardNodes]
-  for (let it = 0; it < 120; it++) {
-    for (let i = 0; i < all.length; i++) for (let j = i + 1; j < all.length; j++) {
-      const A = all[i], B = all[j], a = pos[A.id], b = pos[B.id]
-      const ox = (A.w + B.w) / 2 + 16 - Math.abs(a.x - b.x), oy = (A.h + B.h) / 2 + 14 - Math.abs(a.y - b.y)
-      if (ox > 0 && oy > 0) {
-        if (ox < oy) { const d = (a.x < b.x ? -1 : 1) * ox / 2; a.x += d; b.x -= d } else { const d = (a.y < b.y ? -1 : 1) * oy / 2; a.y += d; b.y -= d }
+  const stop = () => { cancelAnimationFrame(raf.current); anim.current = null }
+  const animateTo = (t, ms = 520) => {
+    stop(); const from = { ...view.current }, t0 = now()
+    const tick = () => {
+      const u = Math.min(1, (now() - t0) / ms), e = 1 - Math.pow(1 - u, 3)
+      view.current = { x: from.x + (t.x - from.x) * e, y: from.y + (t.y - from.y) * e, k: from.k + (t.k - from.k) * e }
+      apply(); if (u < 1) raf.current = requestAnimationFrame(tick)
+    }
+    raf.current = requestAnimationFrame(tick)
+  }
+  const inertia = () => {
+    stop(); let { x: vx, y: vy } = vel.current, t0 = now()
+    const tick = () => {
+      const t = now(), dt = Math.min(40, t - t0); t0 = t
+      const f = Math.pow(0.94, dt / 16.7); vx *= f; vy *= f
+      view.current.x += vx * dt / 16.7; view.current.y += vy * dt / 16.7; apply()
+      if (Math.abs(vx) + Math.abs(vy) > 0.15) raf.current = requestAnimationFrame(tick)
+    }
+    raf.current = requestAnimationFrame(tick)
+  }
+  const zoomAt = (k, px, py, smooth) => {
+    const v = view.current; k = clamp(k, KMIN, KMAX); const s = k / v.k
+    const t = { k, x: px - (px - v.x) * s, y: py - (py - v.y) * s }
+    if (smooth) animateTo(t, 260); else { view.current = t; apply() }
+  }
+  const center = (id, k) => {
+    const p = pos[id]; const el = wrap.current; if (!p || !el) return
+    const r = el.getBoundingClientRect(); const kk = k || clamp(view.current.k < 0.6 ? 0.9 : view.current.k, KMIN, KMAX)
+    animateTo({ k: kk, x: r.width / 2 - p.x * kk, y: r.height * 0.46 - p.y * kk })
+  }
+  const fitAll = () => {
+    const r = wrap.current.getBoundingClientRect(); const k = clamp(Math.min(r.width / (box.x1 - box.x0 + 60), r.height / (box.y1 - box.y0 + 60)), KMIN, KMAX)
+    animateTo({ k, x: r.width / 2 - (box.x0 + box.x1) / 2 * k, y: r.height / 2 - (box.y0 + box.y1) / 2 * k })
+  }
+
+  useEffect(() => { apply() }, [])
+  useEffect(() => { center(selected) }, [selected, pos])
+  useEffect(() => () => stop(), [])
+
+  const local = (e) => { const r = wrap.current.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top } }
+  const onDown = (e) => {
+    stop(); ptr.current.set(e.pointerId, local(e))
+    if (ptr.current.size === 1) { moved.current = false; gest.current = { start: local(e), t: now() }; vel.current = { x: 0, y: 0, t: now() } }
+    if (ptr.current.size === 2) startPinch()
+  }
+  const startPinch = () => {
+    const [a, b] = [...ptr.current.values()]; const v = view.current
+    const c = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 }
+    gest.current.pinch = { d0: Math.hypot(a.x - b.x, a.y - b.y) || 1, k0: v.k, wx: (c.x - v.x) / v.k, wy: (c.y - v.y) / v.k }
+    moved.current = true
+  }
+  const onMove = (e) => {
+    if (!ptr.current.has(e.pointerId)) return
+    const prev = ptr.current.get(e.pointerId), p = local(e); ptr.current.set(e.pointerId, p)
+    if (ptr.current.size === 1 && !gest.current.pinch) {
+      const s = gest.current.start
+      if (!moved.current && Math.hypot(p.x - s.x, p.y - s.y) > 7) { moved.current = true; wrap.current.setPointerCapture?.(e.pointerId) }
+      if (!moved.current) return
+      const dx = p.x - prev.x, dy = p.y - prev.y, t = now(), dt = Math.max(1, t - vel.current.t)
+      vel.current = { x: vel.current.x * 0.6 + dx / dt * 16.7 * 0.4, y: vel.current.y * 0.6 + dy / dt * 16.7 * 0.4, t }
+      view.current.x += dx; view.current.y += dy
+    } else if (ptr.current.size >= 2 && gest.current.pinch) {
+      const [a, b] = [...ptr.current.values()]; const g = gest.current.pinch
+      const k = clamp(g.k0 * Math.hypot(a.x - b.x, a.y - b.y) / g.d0, KMIN, KMAX)
+      const c = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 }
+      view.current = { k, x: c.x - g.wx * k, y: c.y - g.wy * k }
+    }
+    if (!pending.current) { pending.current = true; requestAnimationFrame(() => { pending.current = false; apply() }) }
+  }
+  const onUp = (e) => {
+    if (!ptr.current.has(e.pointerId)) return
+    ptr.current.delete(e.pointerId)
+    if (ptr.current.size === 1) { gest.current.pinch = null; const [p] = [...ptr.current.values()]; gest.current.start = p; vel.current = { x: 0, y: 0, t: now() } }
+    if (ptr.current.size === 0) {
+      gest.current.pinch = null
+      if (moved.current && now() - vel.current.t < 80) inertia()
+      else if (!moved.current && !e.target.closest?.('.node')) {
+        // doppio tocco sullo sfondo: ingrandisce
+        const t = now(); if (t - lastTap.current < 320) { const p = local(e); zoomAt(view.current.k * 1.7, p.x, p.y, true); lastTap.current = 0 } else lastTap.current = t
       }
     }
   }
-  return pos
-}
-
-const mapLabel = (c) => c.name.replace(/ \(.*\)/, '').replace(/^Sensore (a |di |ToF a )?/, (m, x) => x === 'ToF a ' ? 'ToF ' : '').replace(/^./, ch => ch.toUpperCase())
-
-function Graph ({ selected, onSelect }) {
-  const { nodes, edges, pos } = useMemo(() => {
-    const pr = index.value.principles.filter(p => cards.value.some(c => c.principles.includes(p.id)))
-      .map(p => ({ id: p.id, label: p.name, kind: 'principle', w: p.name.length * 7.4 + 30, h: 34 }))
-    const cn = cards.value.map(c => { const label = mapLabel(c); return { id: c.id, label, kind: 'card', area: c.area, principle: c.principles[0], w: label.length * 7 + 26, h: 32 } })
-    const edges = []
-    cards.value.forEach(c => c.principles.forEach(p => edges.push({ a: c.id, b: p, kind: 'principle' })))
-    const seenPair = new Set()
-    cards.value.forEach(c => c.related.forEach(r => {
-      const k = [c.id, r].sort().join('|'); if (seenPair.has(k)) return; seenPair.add(k)
-      edges.push({ a: c.id, b: r, kind: 'related' })
-    }))
-    return { nodes: [...pr, ...cn], edges, pos: layout(pr, cn) }
-  }, [cards.value.length])
-
-  const wrap = useRef(); const [view, setView] = useState({ x: 0, y: 0, k: 1 })
-  const pointers = useRef(new Map()); const last = useRef(null); const moved = useRef(false)
-
-  // centra il nodo selezionato
-  useEffect(() => {
-    const p = pos[selected]; const el = wrap.current; if (!p || !el) return
-    const r = el.getBoundingClientRect()
-    setView(v => ({ k: v.k, x: r.width / 2 - p.x * v.k, y: r.height * 0.45 - p.y * v.k }))
-  }, [selected])
-
-  const onDown = (e) => { pointers.current.set(e.pointerId, { x: e.clientX, y: e.clientY }); moved.current = false; last.current = null }
-  const onMove = (e) => {
-    if (!pointers.current.has(e.pointerId)) return
-    const prev = pointers.current.get(e.pointerId)
-    pointers.current.set(e.pointerId, { x: e.clientX, y: e.clientY })
-    const pts = [...pointers.current.values()]
-    if (pts.length === 1) {
-      const dx = e.clientX - prev.x, dy = e.clientY - prev.y
-      if (Math.abs(dx) + Math.abs(dy) > 2) moved.current = true
-      if (moved.current) { wrap.current.setPointerCapture?.(e.pointerId); setView(v => ({ ...v, x: v.x + dx, y: v.y + dy })) }
-    } else if (pts.length === 2) {
-      moved.current = true
-      const d = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y)
-      const cx = (pts[0].x + pts[1].x) / 2, cy = (pts[0].y + pts[1].y) / 2
-      if (last.current) zoomAt(d / last.current, cx, cy)
-      last.current = d
-    }
-  }
-  const onUp = (e) => { pointers.current.delete(e.pointerId); if (pointers.current.size < 2) last.current = null }
-  const zoomAt = (f, cx, cy) => {
-    const r = wrap.current.getBoundingClientRect(); const px = cx - r.left, py = cy - r.top
-    setView(v => { const k = Math.max(0.25, Math.min(2.5, v.k * f)); const s = k / v.k; return { k, x: px - (px - v.x) * s, y: py - (py - v.y) * s } })
-  }
-  const zoomBtn = (f) => { const r = wrap.current.getBoundingClientRect(); zoomAt(f, r.left + r.width / 2, r.top + r.height / 2) }
+  const onWheel = (e) => { e.preventDefault(); stop(); const p = local(e); zoomAt(view.current.k * Math.exp(-e.deltaY * 0.0016), p.x, p.y) }
+  const zoomBtn = (f) => { const r = wrap.current.getBoundingClientRect(); zoomAt(view.current.k * f, r.width / 2, r.height / 2, true) }
 
   const lit = (e) => e.a === selected || e.b === selected
+  const selCluster = principleById.value[selected] ? selected : byId.value[selected]?.principles[0]
   return (
-    <div class="map-wrap" ref={wrap} onPointerDown={onDown} onPointerMove={onMove} onPointerUp={onUp} onPointerCancel={onUp}
-      onWheel={(e) => { e.preventDefault(); zoomAt(e.deltaY < 0 ? 1.12 : 0.89, e.clientX, e.clientY) }}>
+    <div class="map-wrap" ref={wrap} onPointerDown={onDown} onPointerMove={onMove} onPointerUp={onUp} onPointerCancel={onUp} onWheel={onWheel}>
       <svg role="group" aria-label="Mappa delle connessioni tra tecnologie e principi fisici">
-        <g transform={`translate(${view.x} ${view.y}) scale(${view.k})`} style="transition:transform .35s ease">
-          {pos[selected] && <g aria-hidden="true">
-            {[80, 160, 240].map(r => <circle key={r} cx={pos[selected].x} cy={pos[selected].y} r={r} fill="none" stroke="#8FA8FF" stroke-opacity=".07" />)}
-          </g>}
+        <defs>{cl.map(c => <radialGradient key={c.id} id={'halo-' + c.id}><stop offset="0" stop-color={c.color} stop-opacity=".2" /><stop offset=".7" stop-color={c.color} stop-opacity=".07" /><stop offset="1" stop-color={c.color} stop-opacity="0" /></radialGradient>)}</defs>
+        <g ref={gRef}>
+          <g aria-hidden="true">
+            {cl.map(c => {
+              const on = c.id === selCluster
+              return <g key={c.id}>
+                <circle cx={c.x} cy={c.y} r={c.r} fill={`url(#halo-${c.id})`} />
+                {[c.r * 0.55, c.r * 0.82, c.r].map((r, i) => <circle key={i} class={on ? 'halo-ring on' : 'halo-ring'} cx={c.x} cy={c.y} r={r} fill="none" stroke={on ? '#8FA8FF' : c.color} stroke-opacity={on ? 0.22 : 0.07} stroke-dasharray={i === 2 ? '2 6' : 'none'} />)}
+              </g>
+            })}
+          </g>
           {edges.map((e, i) => {
             const a = pos[e.a], b = pos[e.b]; const on = lit(e)
             if (e.kind === 'principle') {
               return <line key={i} class={'edge' + (on ? ' lit' : '')} x1={a.x} y1={a.y} x2={b.x} y2={b.y}
-                stroke={on ? '#8FA8FF' : '#2E3442'} stroke-width={on ? 2 : 1.4} stroke-dasharray={on ? '6 6' : 'none'} />
+                stroke={on ? '#8FA8FF' : e.primary ? '#2E3442' : '#252A35'} stroke-width={on ? 2 : 1.4} stroke-dasharray={on ? '6 6' : e.primary ? 'none' : '3 6'} />
             }
             if (!on) return null
-            // collegamento tra tecnologie: arco curvo, mostrato solo per il nodo selezionato
-            const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2; const dx = b.x - a.x, dy = b.y - a.y; const L = Math.hypot(dx, dy) || 1
-            // curva dalla parte opposta al centro del gruppo, per non passare sopra il principio
-            const ctr = pos[byId.value[e.a]?.principles[0]] || { x: 0, y: 0 }
-            let cx = mx - dy * 0.35, cy = my + dx * 0.35
-            const alt = { x: mx + dy * 0.35, y: my - dx * 0.35 }
-            if (Math.hypot(alt.x - ctr.x, alt.y - ctr.y) > Math.hypot(cx - ctr.x, cy - ctr.y)) { cx = alt.x; cy = alt.y }
-            return <path key={i} d={`M${a.x} ${a.y} Q${cx} ${cy} ${b.x} ${b.y}`} fill="none" stroke="#B9A3FF" stroke-width="1.6" stroke-dasharray="2 5" opacity=".8" />
+            const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2; const dx = b.x - a.x, dy = b.y - a.y
+            return <path key={i} d={`M${a.x} ${a.y} Q${mx - dy * 0.22} ${my + dx * 0.22} ${b.x} ${b.y}`} fill="none" stroke="#B9A3FF" stroke-width="1.6" stroke-dasharray="2 5" opacity=".85" />
           })}
           {nodes.map(n => {
             const p = pos[n.id]; const sel = n.id === selected
             const seen = n.kind === 'principle' || !!state.value.seen[n.id]
             const color = n.kind === 'principle' ? '#ECEEF3' : (areaById.value[n.area]?.color || '#F0B44C')
             return (
-              <g key={n.id} class={'node ' + n.kind} transform={`translate(${p.x - n.w / 2} ${p.y - n.h / 2})`}
+              <g key={n.id} class={'node ' + n.kind + (sel ? ' sel' : '')} transform={`translate(${p.x - n.w / 2} ${p.y - n.h / 2})`}
                 role="button" tabIndex={0} aria-label={n.label + (n.kind === 'card' ? (seen ? ', vista' : ', da scoprire') : ', principio')} aria-pressed={sel}
                 onClick={() => { if (!moved.current) onSelect(n.id) }} onKeyDown={(e) => { if (e.key === 'Enter') onSelect(n.id) }}>
                 {sel && <rect class="sel-ring" x="-6" y="-6" width={n.w + 12} height={n.h + 12} rx={n.h / 2 + 6} fill="none" stroke="#8FA8FF" stroke-width="3" />}
-                <rect width={n.w} height={n.h} rx={n.kind === 'principle' ? n.h / 2 : 10}
-                  fill={n.kind === 'principle' ? '#ECEEF3' : seen ? '#1B1A16' : '#0B0D12'}
-                  stroke={n.kind === 'principle' ? 'none' : color} stroke-width="1.5" stroke-dasharray={seen ? 'none' : '4 4'} />
-                <text x={n.w / 2} y={n.h / 2 + 4} text-anchor="middle" style={n.kind === 'card' && !seen ? 'fill:#C9CED8' : ''}>{n.label}</text>
+                <g class={n.kind === 'principle' ? 'lab' : null}>
+                  <rect class="box" width={n.w} height={n.h} rx={n.kind === 'principle' ? n.h / 2 : 10}
+                    fill={n.kind === 'principle' ? '#ECEEF3' : seen ? '#1B1A16' : '#0B0D12'}
+                    stroke={n.kind === 'principle' ? 'none' : color} stroke-width="1.5" stroke-dasharray={seen ? 'none' : '4 4'} />
+                  <text x={n.w / 2} y={n.h / 2 + 4} text-anchor="middle" style={n.kind === 'card' && !seen ? 'fill:#C9CED8' : ''}>{n.label}</text>
+                </g>
+                {n.kind === 'card' && <circle class="dot" cx={n.w / 2} cy={n.h / 2} r="9" fill={seen ? color : '#0B0D12'} stroke={color} stroke-width="2" />}
               </g>
             )
           })}
         </g>
       </svg>
-      <div style="position:absolute;left:12px;top:10px;font:500 10px var(--mono);color:#A0A7B4;letter-spacing:.5px;pointer-events:none;display:flex;flex-direction:column;gap:4px"><span>TRASCINA · PIZZICA PER ZOOM</span><span style="display:flex;align-items:center;gap:6px"><svg width="22" height="6" aria-hidden="true"><path d="M0 3 H22" stroke="#B9A3FF" stroke-width="1.6" stroke-dasharray="2 5"/></svg>COLLEGATO A</span></div>
-      <div class="zoom"><button aria-label="Ingrandisci" onClick={() => zoomBtn(1.25)}>+</button><button aria-label="Riduci" onClick={() => zoomBtn(0.8)}>−</button></div>
+      <div class="map-hint"><span>TRASCINA · PIZZICA · DOPPIO TOCCO</span><span style="display:flex;align-items:center;gap:6px"><svg width="22" height="6" aria-hidden="true"><path d="M0 3 H22" stroke="#B9A3FF" stroke-width="1.6" stroke-dasharray="2 5" /></svg>COLLEGATO A</span></div>
+      <div class="zoom">
+        <button aria-label="Ingrandisci" onClick={() => zoomBtn(1.35)}>+</button>
+        <button aria-label="Riduci" onClick={() => zoomBtn(0.74)}>−</button>
+        <button aria-label="Vista d'insieme" onClick={fitAll}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" /></svg></button>
+      </div>
     </div>
   )
 }
@@ -209,7 +246,8 @@ function Areas () {
 }
 
 export function MapScreen ({ focus }) {
-  const [tab, setTab] = useState('graph')
+  const [tab, setTabS] = useState(() => { try { return localStorage.getItem('mapTab') || 'graph' } catch (e) { return 'graph' } })
+  const setTab = (t) => { setTabS(t); try { localStorage.setItem('mapTab', t) } catch (e) {} }
   const selected = focus || 'tempo-di-volo'
   return (
     <div class="screen">
@@ -217,12 +255,13 @@ export function MapScreen ({ focus }) {
       <div style="padding:0 16px 10px">
         <div class="seg" role="group" aria-label="Vista della mappa">
           <button aria-pressed={tab === 'graph'} onClick={() => setTab('graph')}>Connessioni</button>
-          <button aria-pressed={tab === 'areas'} onClick={() => setTab('areas')}>Aree tematiche</button>
+          <button aria-pressed={tab === '3d'} onClick={() => setTab('3d')}>Costellazione 3D</button>
+          <button aria-pressed={tab === 'areas'} onClick={() => setTab('areas')}>Aree</button>
         </div>
       </div>
-      {tab === 'graph'
-        ? <><Graph selected={selected} onSelect={(id) => routeReplace('mappa/' + id)} /><Sheet id={selected} /></>
-        : <Areas />}
+      {tab === 'graph' && <><Graph selected={selected} onSelect={(id) => routeReplace('mappa/' + id)} /><Sheet id={selected} /></>}
+      {tab === '3d' && <><Map3D selected={selected} onSelect={(id) => routeReplace('mappa/' + id)} /><Sheet id={selected} /></>}
+      {tab === 'areas' && <Areas />}
     </div>
   )
 }
