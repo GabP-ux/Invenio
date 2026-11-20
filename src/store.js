@@ -78,7 +78,7 @@ export const answerQuiz = (key, correct) => update(s => {
   const cur = s.quiz[key] || { box: 0, due: 0 }
   const box = correct ? Math.min(cur.box + 1, DAYS.length - 1) : 1
   const wait = correct ? DAYS[box] : 1
-  s.quiz[key] = { box, due: Date.now() + wait * DAY }
+  s.quiz[key] = { box, due: Date.now() + wait * DAY, wrong: !correct }   // wrong: l'ultima risposta era sbagliata
 })
 
 // Backup: esporta e importa lo stato in un file
