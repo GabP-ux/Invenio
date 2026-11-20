@@ -1,0 +1,26 @@
+/* Animazioni degli schemi. Ogni freccia indica un verso reale (vedi "Linguaggio degli schemi"). */
+@keyframes lOut{0%{transform:translateX(0);opacity:1}44%{transform:translateX(202px);opacity:1}45%,100%{transform:translateX(202px);opacity:0}}
+@keyframes lBack{0%,48%{transform:translateX(0);opacity:0}49%{opacity:1}92%{transform:translateX(-202px);opacity:1}93%,100%{transform:translateX(-202px);opacity:0}}
+@keyframes lHit{0%,42%{opacity:0}47%{opacity:1}56%,100%{opacity:0}}
+@keyframes lDet{0%,90%{fill:#1A1F2A}93%,99%{fill:#3B4A7A}100%{fill:#1A1F2A}}
+.lOut{animation:lOut 2.6s linear infinite}.lBack{animation:lBack 2.6s linear infinite}
+.lHit{animation:lHit 2.6s linear infinite}.lDet{animation:lDet 2.6s linear infinite}
+
+@keyframes pOut{0%{stroke-dashoffset:6;opacity:1}49%{stroke-dashoffset:-100;opacity:1}50%,100%{stroke-dashoffset:-100;opacity:0}}
+@keyframes pBack{0%,50%{stroke-dashoffset:6;opacity:0}51%{opacity:1}99%{stroke-dashoffset:-100;opacity:1}100%{opacity:0}}
+@keyframes pDet{0%,96%{fill:#1A1F2A}98%{fill:#3B4A7A}100%{fill:#1A1F2A}}
+.pOut{animation:pOut linear infinite}.pBack{animation:pBack linear infinite}.pDet{animation:pDet linear infinite}
+
+@keyframes pWalk{0%{transform:translateX(0);opacity:0}4%{opacity:1}80%{transform:translateX(310px);opacity:1}86%,100%{transform:translateX(310px);opacity:0}}
+@keyframes pZoneA{0%,17%{fill-opacity:.06}19%,35%{fill-opacity:.42}37%,100%{fill-opacity:.06}}
+@keyframes pZoneB{0%,43%{fill-opacity:.06}45%,61%{fill-opacity:.42}63%,100%{fill-opacity:.06}}
+.pWalk{animation:pWalk 4.2s linear infinite}.pZoneA{animation:pZoneA 4.2s linear infinite}.pZoneB{animation:pZoneB 4.2s linear infinite}
+
+@keyframes hUp{0%{transform:translate(0,0);opacity:0}10%{opacity:1}85%{opacity:1}100%{transform:translate(-176px,-26px);opacity:0}}
+@keyframes hDown{0%{transform:translate(0,0);opacity:0}10%{opacity:1}85%{opacity:1}100%{transform:translate(-176px,26px);opacity:0}}
+@keyframes hFlat{0%{transform:translate(0,0);opacity:0}10%{opacity:1}85%{opacity:1}100%{transform:translate(-176px,0);opacity:0}}
+.hUp{animation:hUp 2.8s linear infinite}.hDown{animation:hDown 2.8s linear infinite}.hFlat{animation:hFlat 2.8s linear infinite}
+.d1{animation-delay:-.7s}.d2{animation-delay:-1.4s}.d3{animation-delay:-2.1s}
+
+@keyframes drift{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.drift{animation:drift 2.4s ease-in-out infinite}
