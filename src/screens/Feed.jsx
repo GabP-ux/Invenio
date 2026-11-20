@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks'
 import { cards, breadcrumb, areaColor } from '../data'
 import { state, markSeen, toggleSave } from '../store'
-import { ANIM, CAPTION } from '../diagrams'
+import { VIS, Visual } from '../diagrams/registry'
 import { Icon, WImg, Crumb } from '../components/ui'
 
 const PACK = 5
@@ -27,7 +27,7 @@ function FeedItem ({ c, next, onSaved }) {
     io.observe(ref.current)
     return () => { io.disconnect(); clearTimeout(t) }
   }, [c.id])
-  const A = c.diagram && ANIM[c.diagram]
+  const hasVis = !!(c.diagram && VIS[c.diagram])
   const img = c.images[0]
   const color = areaColor(c)
   return (
@@ -35,8 +35,8 @@ function FeedItem ({ c, next, onSaved }) {
       <article class="card feed-card rise">
         <Crumb color={color} text={breadcrumb(c)} />
         <h2>{c.hook}</h2>
-        {A
-          ? <figure class="fig"><A /><figcaption>{CAPTION[c.diagram]}</figcaption></figure>
+        {hasVis
+          ? <Visual k={c.diagram} mode="auto" />
           : img && <WImg src={img.src} alt={img.cap} class="feed-photo" style={img.fit === 'contain' ? `object-fit:contain;background:${img.bg};padding:10px` : ''} />}
         <p>{c.short}</p>
         <div class="chips">{c.uses.slice(0, 4).map(u => <span class="chip" key={u}>{u}</span>)}</div>

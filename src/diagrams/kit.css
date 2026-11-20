@@ -1,0 +1,12 @@
+/* Animazioni generiche del kit degli schemi */
+.vis{display:flex;flex-direction:column;gap:10px}
+.k-flow{stroke-dasharray:7 9;animation:kFlow var(--dur,1s) linear infinite}
+@keyframes kFlow{to{stroke-dashoffset:-32}}
+.k-dots{stroke-dasharray:0 14;animation:kDots var(--dur,1.2s) linear infinite}
+@keyframes kDots{to{stroke-dashoffset:28}}
+.k-spin{transform-box:view-box;animation:kSpin var(--dur,2s) linear infinite}
+.k-spin-rev{transform-box:view-box;animation:kSpin var(--dur,2s) linear infinite reverse}
+@keyframes kSpin{to{transform:rotate(360deg)}}
+.k-blink{animation:kBlink var(--dur,1s) ease-in-out infinite}
+@keyframes kBlink{0%,100%{opacity:.25}50%{opacity:1}}
+.k-ease{transition:transform .9s cubic-bezier(.3,.7,.3,1),opacity .4s,fill .6s,stroke .6s}

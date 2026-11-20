@@ -1,4 +1,4 @@
-import { useState } from 'preact/hooks'
+import { useState, useEffect } from 'preact/hooks'
 import './diagrams.css'
 
 const T = { fontFamily: 'JetBrains Mono, monospace' }
@@ -283,12 +283,18 @@ function Switch ({ x, y, name, closed, label }) {
     </g>
   )
 }
-export function HBridgeSim () {
+export function HBridgeSim ({ auto }) {
   const [m, setM] = useState('avanti')
+  useEffect(() => {
+    if (!auto) return
+    const seq = ['avanti', 'indietro', 'off', 'corto']; let i = 0
+    const t = setInterval(() => { i = (i + 1) % seq.length; setM(seq[i]) }, 2400)
+    return () => clearInterval(t)
+  }, [auto])
   const st = HB[m]; const on = (n) => st.closed.includes(n)
   return (
-    <div class="card" style="padding:14px;display:flex;flex-direction:column;gap:10px">
-      <span class="kicker">Prova tu · dove passa la corrente</span>
+    <div class={auto ? 'vis' : 'card'} style={auto ? '' : 'padding:14px;display:flex;flex-direction:column;gap:10px'}>
+      {!auto && <span class="kicker">Prova tu · dove passa la corrente</span>}
       <div class="fig">
         <svg viewBox="0 0 336 222" role="img" aria-label={st.text}>
           <path d="M40 20 H296" stroke="#F28C6B" stroke-width="2" /><text x="34" y="24" fill="#F28C6B" style={T} font-size="11" text-anchor="end">+</text>
@@ -306,10 +312,10 @@ export function HBridgeSim () {
         </svg>
         <figcaption>linea gialla = percorso della corrente (dal + al −)</figcaption>
       </div>
-      <div class="seg" role="group" aria-label="Interruttori chiusi">
+      {!auto && <div class="seg" role="group" aria-label="Interruttori chiusi">
         {[['off', 'Spento'], ['avanti', 'S1+S4'], ['indietro', 'S2+S3'], ['corto', 'S1+S3']].map(([k, l]) =>
           <button key={k} aria-pressed={m === k} onClick={() => setM(k)}>{l}</button>)}
-      </div>
+      </div>}
       <p style={'margin:0;font-size:14px;line-height:1.5;color:' + (st.short ? '#FF8A80' : '#C9CED8')}>{st.text}</p>
     </div>
   )

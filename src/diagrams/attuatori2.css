@@ -1,0 +1,54 @@
+/* motore DC: la spira gira da verticale a verticale; al salto il collettore scambia i lati (stessa immagine) */
+@keyframes dcRot{from{transform:rotate(-90deg)}to{transform:rotate(90deg)}}
+.dc-rot{transform-box:view-box;transform-origin:168px 95px;animation:dcRot 1.8s linear infinite}
+/* i simboli ⊙ e ⊗ restano dritti mentre la spira gira */
+@keyframes dcCounter{from{transform:rotate(90deg)}to{transform:rotate(-90deg)}}
+.dc-counter{transform-box:fill-box;transform-origin:center;animation:dcCounter 1.8s linear infinite}
+
+/* brushless: fasi A, B, C accese in sequenza; rotore che gira in senso orario */
+@keyframes blC{0%,33.2%{fill:#F0B44C;fill-opacity:.85}33.3%,100%{fill:#1A1F2A;fill-opacity:1}}
+.bl-c{animation:blC 1.5s linear infinite}
+.bl-B{animation-delay:-1s}.bl-C{animation-delay:-.5s}
+@keyframes blRot{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+.bl-rot{transform-box:view-box;transform-origin:168px 95px;animation:blRot 3s linear infinite}
+
+/* vibrazione: il corpo segue il peso (che gira in senso orario) */
+@keyframes vbBody{0%{transform:translate(2.5px,0)}25%{transform:translate(0,2.5px)}50%{transform:translate(-2.5px,0)}75%{transform:translate(0,-2.5px)}100%{transform:translate(2.5px,0)}}
+.vb-body{animation:vbBody .35s linear infinite}
+@keyframes vbWave{0%{opacity:0;transform:translateX(0)}50%{opacity:.8}100%{opacity:0;transform:translateX(-14px)}}
+.vb-wave{animation:vbWave .7s linear infinite}
+
+/* attuatore lineare: i filetti scorrono nel verso in cui avanza il dado */
+@keyframes lnThr{from{transform:translateX(0)}to{transform:translateX(9px)}}
+.ln-thr{animation:lnThr .35s linear infinite}
+.ln-rev{animation-direction:reverse}
+
+/* piezo */
+@keyframes pzBend{0%,100%{transform:scaleY(1)}50%{transform:scaleY(-1)}}
+.pz-bend{transform-box:view-box;transform-origin:168px 100px;animation:pzBend .8s ease-in-out infinite}
+@keyframes pzA{0%,49%{opacity:1}50%,100%{opacity:0}}
+@keyframes pzB{0%,49%{opacity:0}50%,100%{opacity:1}}
+.pz-a{animation:pzA .8s step-end infinite}.pz-b{animation:pzB .8s step-end infinite}
+@keyframes pzSnd{0%{opacity:0;transform:translateY(8px)}40%{opacity:1}100%{opacity:0;transform:translateY(-10px)}}
+.pz-snd{animation:pzSnd .8s ease-out infinite}
+
+/* elettrovalvola: aperta tra 45% e 88% del ciclo */
+@keyframes evPl{0%,40%{transform:translateY(0)}46%,88%{transform:translateY(-22px)}94%,100%{transform:translateY(0)}}
+.ev-plunger{animation:evPl 4s ease-in-out infinite}
+@keyframes evOn{0%,44%{opacity:0}48%,88%{opacity:1}92%,100%{opacity:0}}
+@keyframes evOff{0%,44%{opacity:1}48%,88%{opacity:0}92%,100%{opacity:1}}
+.ev-flow,.ev-on{animation:evOn 4s linear infinite}.ev-off{animation:evOff 4s linear infinite}
+
+/* altoparlante */
+@keyframes spMove{0%,100%{transform:translateX(-5px)}50%{transform:translateX(5px)}}
+.sp-move{animation:spMove .5s ease-in-out infinite}
+@keyframes spWave{from{opacity:.9;transform:translateX(0)}to{opacity:0;transform:translateX(90px)}}
+.sp-wave{animation:spWave 1.2s linear infinite}
+@keyframes spA{0%,49%{opacity:1}50%,100%{opacity:0}}
+@keyframes spB{0%,49%{opacity:0}50%,100%{opacity:1}}
+.sp-a{animation:spA .5s step-end infinite}.sp-b{animation:spB .5s step-end infinite}
+
+/* peltier: calore che scorre verso il lato caldo */
+@keyframes ptDown{from{transform:translateY(-6px);opacity:.3}to{transform:translateY(40px);opacity:1}}
+@keyframes ptUp{from{transform:translateY(40px);opacity:.3}to{transform:translateY(-6px);opacity:1}}
+.pt-down{animation:ptDown 1.2s linear infinite}.pt-up{animation:ptUp 1.2s linear infinite}

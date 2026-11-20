@@ -53,6 +53,10 @@ Se colleghi GitHub a Claude (Impostazioni di claude.ai › Connettori), le pross
 3. Scorri e scegli **Aggiungi alla schermata Home** → **Aggiungi**.
 4. Usarla sempre dall'icona: Safari cancella i dati dei siti non aperti per 7 giorni, ma non quelli delle app aggiunte alla Home.
 
+## Schemi di funzionamento
+
+Ogni scheda ha uno schema in `src/diagrams/` (animato nel feed, interattivo nella scheda quando serve). Regole, colori e controlli di correttezza sono descritti in `docs/skill-invenio-schemi.md`; i pezzi riutilizzabili sono in `src/diagrams/kit.jsx` e il registro in `src/diagrams/registry.jsx`. `tools/build_data.py` blocca la pubblicazione se una scheda indica uno schema che non esiste e segnala le schede ancora senza schema.
+
 ## Aggiungere schede (la filiera dei dati)
 
 I contenuti sono divisi in pacchetti: `tools/content/sensori.py`, `tools/content/attuatori.py`… L'indice di aree, sottocategorie (ricalcate dai cataloghi dei distributori) e principi fisici è in `tools/content/indice.py`.

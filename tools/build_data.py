@@ -15,6 +15,7 @@ import lib
 PACKS = [  # ordine dei pacchetti: id, nome mostrato
     ("sensori", "Sensori"),
     ("attuatori", "Attuatori e motori"),
+    ("componenti", "Componenti di base"),
 ]
 OUT = os.path.join(os.path.dirname(__file__), '..', 'public', 'data')
 
@@ -64,9 +65,9 @@ def check(indice):
         if not str(c.get("source", {}).get("url", "")).startswith("https://"):
             errors.append(f"{where} fonte senza link")
         if c.get("diagram") and c["diagram"] not in DIAGRAMS:
-            errors.append(f"{where} schema animato inesistente: {c['diagram']}")
-        if c.get("sim") and c["sim"] not in SIMS:
-            errors.append(f"{where} simulatore inesistente: {c['sim']}")
+            errors.append(f"{where} schema inesistente nel registro dell'app: {c['diagram']}")
+        if not c.get("diagram"):
+            NO_DIAGRAM.append(c["id"])
     clash = pids & set(ids)
     if clash:
         errors.append(f"stesso id usato da una scheda e da un principio (la mappa li confonderebbe): {clash}")
@@ -77,9 +78,12 @@ def check(indice):
     return errors, unused
 
 
-# schemi e simulatori disponibili nell'app (src/diagrams/index.jsx)
-DIAGRAMS = {"lidar", "ultrasuoni", "pir", "hall", "humidity", "stepper", "solenoid"}
-SIMS = {"lidar", "hall", "humidity", "hbridge"}
+# schemi disponibili nell'app: letti dal registro src/diagrams/registry.jsx
+import re as _re
+_reg = open(os.path.join(os.path.dirname(__file__), '..', 'src', 'diagrams', 'registry.jsx')).read()
+_reg = _reg[_reg.index('export const VIS'):]
+DIAGRAMS = set(_re.findall(r"^\s+'?([a-z0-9-]+)'?:\s*(?:anim|vis|\{)", _reg, _re.M))
+NO_DIAGRAM = []
 
 if __name__ == "__main__":
     import indice
@@ -99,6 +103,8 @@ if __name__ == "__main__":
              "subs": [{"id": k, "area": v[0], "name": v[1]} for k, v in indice.subs.items()],
              "principles": indice.principles, "packs": packs}
     json.dump(index, open(os.path.join(OUT, "index.json"), "w"), ensure_ascii=False, separators=(",", ":"))
+    if NO_DIAGRAM:
+        print("Nota: schede ancora senza schema:", ", ".join(NO_DIAGRAM))
     if unused:
         print("Nota: principi senza schede (non compaiono in mappa):", ", ".join(sorted(unused)))
     print("Tutto a posto.")

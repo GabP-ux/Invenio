@@ -47,7 +47,7 @@ def img(file, cap, artist=None, lic=None, fit='cover', bg=None):
 def card(**k):
     for f in ("variants", "uses", "related", "images"):
         k.setdefault(f, [])
-    for f in ("diagram", "sim", "formula", "note"):
+    for f in ("diagram", "formula", "note"):
         k.setdefault(f, None)
     k["pack"] = _pack[0]
     CARDS.append(k)

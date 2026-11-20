@@ -1,0 +1,28 @@
+/* accelerometro: il chip accelera a destra -> la massa resta indietro (a sinistra) */
+@keyframes acMass{0%,10%{transform:translateX(0)}18%,35%{transform:translateX(-30px)}43%,60%{transform:translateX(0)}68%,85%{transform:translateX(30px)}93%,100%{transform:translateX(0)}}
+.ac-mass{animation:acMass 5s ease-in-out infinite}
+@keyframes acR{0%,12%{opacity:0}18%,35%{opacity:1}40%,100%{opacity:0}}
+@keyframes acL{0%,62%{opacity:0}68%,85%{opacity:1}90%,100%{opacity:0}}
+.ac-r{animation:acR 5s linear infinite}.ac-l{animation:acL 5s linear infinite}
+
+/* fotoresistenza: fotoni */
+@keyframes ldrPh{0%{opacity:0;transform:translate(0,0)}30%{opacity:1}100%{opacity:0;transform:translate(6px,-18px)}}
+.ldr-ph{animation:ldrPh 1.2s linear infinite}
+
+/* fotodiodo: fotone -> coppia -> separazione */
+@keyframes fdPh{0%{opacity:0;transform:translateY(-14px)}10%,22%{opacity:1;transform:translateY(0)}30%,100%{opacity:0}}
+@keyframes fdE{0%,24%{opacity:0;transform:translateX(0)}28%{opacity:1}70%{opacity:1;transform:translateX(70px)}78%,100%{opacity:0;transform:translateX(70px)}}
+@keyframes fdH{0%,24%{opacity:0;transform:translateX(0)}28%{opacity:1}70%{opacity:1;transform:translateX(-70px)}78%,100%{opacity:0;transform:translateX(-70px)}}
+.fd-ph{animation:fdPh 3s ease-out infinite}.fd-e{animation:fdE 3s ease-in-out infinite}.fd-h{animation:fdH 3s ease-in-out infinite}
+
+/* termocoppia */
+@keyframes tcHeat{0%,100%{transform:scaleY(1)}50%{transform:scaleY(1.12)}}
+.tc-heat path{transform-box:fill-box;transform-origin:50% 100%;animation:tcHeat .6s ease-in-out infinite}
+
+/* encoder: i segnali scorrono verso sinistra, il presente è la linea tratteggiata */
+@keyframes encScroll{from{transform:translateX(0)}to{transform:translateX(-64px)}}
+.enc-scroll{animation:encScroll 2s linear infinite}
+
+/* gps: impulsi che si allargano fino al ricevitore */
+@keyframes gpsPulse{0%{transform:scale(1);opacity:.9}90%{opacity:.6}100%{transform:scale(var(--s));opacity:0}}
+.gps-pulse{animation:gpsPulse 2.4s ease-out infinite}

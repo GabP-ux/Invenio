@@ -7,6 +7,10 @@
   "artist": "Suyash Dwivedi",
   "license": "CC BY-SA 4.0"
  },
+ "5mm Red LED.jpg": {
+  "artist": "oomlout",
+  "license": "CC BY-SA 2.0"
+ },
  "Adafruit GPS Module Breakout.jpg": {
   "artist": "oomlout",
   "license": "CC BY-SA 2.0"
@@ -15,16 +19,40 @@
   "artist": "Iliakriv",
   "license": "CC BY-SA 3.0"
  },
+ "Carbon film resistor cross section.jpg": {
+  "artist": "TubeTimeUS",
+  "license": "CC BY-SA 4.0"
+ },
  "Concept of LiDAR.svg": {
   "artist": "Cartographer3d",
   "license": "CC BY-SA 4.0"
+ },
+ "Crystal oscillator 4MHz.jpg": {
+  "artist": "(copied from en.wikipedia) — Omegatron 18",
+  "license": "CC BY-SA 3.0"
  },
  "DHT22 digital temperature and humidity sensor module pcb.jpg": {
   "artist": "Suyash Dwivedi",
   "license": "CC BY-SA 4.0"
  },
+ "Diode 1N4007.jpg": {
+  "artist": "Zxelt",
+  "license": "CC0"
+ },
+ "Drehpotentiometer2 hg.jpg": {
+  "artist": "Hannes Grobe",
+  "license": "CC BY-SA 4.0"
+ },
  "Dynamischer Tiefton-Lautsprecher (geschnittenes Original).jpg": {
   "artist": "Journey234",
+  "license": "pubblico dominio"
+ },
+ "Electrolytic capacitors-P1090328.JPG": {
+  "artist": "Elcap",
+  "license": "CC0"
+ },
+ "Electronic-Axial-Lead-Resistors-Array.jpg": {
+  "artist": "Evan-Amos",
   "license": "pubblico dominio"
  },
  "Floppy drive spindle motor open.jpg": {
@@ -38,6 +66,14 @@
  "FreescaleSemiconductor 3-Axis-MEMS-Accelerometer MMA8452Q 10953-01b.jpg": {
   "artist": "SparkFun",
   "license": "CC BY 2.0"
+ },
+ "G-Sicherung ausgelöst.png": {
+  "artist": "SLXViper",
+  "license": "CC BY-SA 3.0"
+ },
+ "Generic 2N2222A.jpeg": {
+  "artist": "MarkMossGH",
+  "license": "CC0"
  },
  "HC SR04 Ultrasonic Module.jpg": {
   "artist": "Suyash Dwivedi",
@@ -58,6 +94,10 @@
  "Linear actuator photo.jpg": {
   "artist": "Rsteves00",
   "license": "attribuzione"
+ },
+ "MOSFET transistors.jpg": {
+  "artist": "Mister rf",
+  "license": "CC BY-SA 4.0"
  },
  "Memory Spring Quadrat.jpg": {
   "artist": "DaniSMI",
@@ -119,6 +159,10 @@
   "artist": "Nevit Dilmen",
   "license": "CC BY-SA 3.0"
  },
+ "Silicon diode cross section.jpg": {
+  "artist": "TubeTimeUS",
+  "license": "CC BY-SA 4.0"
+ },
  "Solenoid valve 2019.jpg": {
   "artist": "ToT89",
   "license": "CC BY-SA 4.0"
@@ -130,6 +174,10 @@
  "Thermocouple K (2).jpg": {
   "artist": "Harke",
   "license": "pubblico dominio"
+ },
+ "Toroidal inductor.jpg": {
+  "artist": "Peripitus",
+  "license": "CC BY-SA 4.0"
  },
  "Unmounted strain gauge.jpg": {
   "artist": "Pleriche",

@@ -1,7 +1,7 @@
 import { useEffect } from 'preact/hooks'
 import { byId, breadcrumb, areaColor, principleById } from '../data'
 import { state, markSeen, toggleSave } from '../store'
-import { SIM, ANIM, CAPTION } from '../diagrams'
+import { VIS, Visual } from '../diagrams/registry'
 import { Icon, WImg, Crumb, Back } from '../components/ui'
 
 export function Detail ({ id }) {
@@ -9,8 +9,7 @@ export function Detail ({ id }) {
   useEffect(() => { if (c) { markSeen(c.id); document.querySelector('.detail-scroll')?.scrollTo(0, 0) } }, [id])
   if (!c) return <div class="screen"><div class="topbar"><Back /></div><div class="empty">Scheda non trovata.</div></div>
   const saved = !!state.value.saved[c.id]
-  const Sim = c.sim && SIM[c.sim]
-  const A = !Sim && c.diagram && ANIM[c.diagram]
+  const v = c.diagram && VIS[c.diagram]
   return (
     <div class="screen">
       <header class="topbar" style="padding:6px 8px;border-bottom:1px solid var(--line-soft)">
@@ -29,8 +28,9 @@ export function Detail ({ id }) {
             <p style="margin:6px 0 0;font-size:15px;line-height:1.55;color:var(--text-2)">{c.short}</p>
           </section>
 
-          {Sim && <Sim />}
-          {A && <figure class="fig"><A /><figcaption>{CAPTION[c.diagram]}</figcaption></figure>}
+          {v && (v.interactive
+            ? <section><h2 class="section-title">Prova tu</h2><Visual k={c.diagram} mode="play" /></section>
+            : <Visual k={c.diagram} mode="play" />)}
 
           <section>
             <h2 class="section-title">Come funziona{c.principles.length ? ' · ' + principleById.value[c.principles[0]]?.name : ''}</h2>
