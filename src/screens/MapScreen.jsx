@@ -11,7 +11,7 @@ function layout (principles, cardNodes) {
   const groups = principles.map(p => ({ p, items: cardNodes.filter(n => n.principle === p.id) }))
     .sort((a, b) => b.items.length - a.items.length)
   const [first, ...rest] = groups
-  const R = 430
+  const R = Math.max(430, rest.length * 66)
   const place = (g, cx, cy, outward) => {
     pos[g.p.id] = { x: cx, y: cy }
     const n = g.items.length
@@ -89,7 +89,7 @@ function Graph ({ selected, onSelect }) {
   const onUp = (e) => { pointers.current.delete(e.pointerId); if (pointers.current.size < 2) last.current = null }
   const zoomAt = (f, cx, cy) => {
     const r = wrap.current.getBoundingClientRect(); const px = cx - r.left, py = cy - r.top
-    setView(v => { const k = Math.max(0.4, Math.min(2.5, v.k * f)); const s = k / v.k; return { k, x: px - (px - v.x) * s, y: py - (py - v.y) * s } })
+    setView(v => { const k = Math.max(0.25, Math.min(2.5, v.k * f)); const s = k / v.k; return { k, x: px - (px - v.x) * s, y: py - (py - v.y) * s } })
   }
   const zoomBtn = (f) => { const r = wrap.current.getBoundingClientRect(); zoomAt(f, r.left + r.width / 2, r.top + r.height / 2) }
 

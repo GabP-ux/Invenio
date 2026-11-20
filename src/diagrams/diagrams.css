@@ -24,3 +24,29 @@
 
 @keyframes drift{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 .drift{animation:drift 2.4s ease-in-out infinite}
+
+/* Passo-passo: 4 bobine accese in sequenza, il rotore scatta verso quella accesa */
+@keyframes stRot{0%{transform:rotate(-90deg)}3%,25%{transform:rotate(0)}28%,50%{transform:rotate(90deg)}53%,75%{transform:rotate(180deg)}78%,100%{transform:rotate(270deg)}}
+@keyframes stC{0%,24.9%{fill:#F0B44C;fill-opacity:.85}25%,100%{fill:#1A1F2A;fill-opacity:1}}
+.stRot{transform-box:view-box;transform-origin:96px 85px;animation:stRot 4s linear infinite}
+.stC{animation:stC 4s linear infinite}
+.stC2{animation-delay:-3s}.stC3{animation-delay:-2s}.stC4{animation-delay:-1s}
+@keyframes stHead{from{transform:translateX(0)}to{transform:translateX(124px)}}
+.stHead{animation:stHead 4s linear infinite}
+
+/* Solenoide: corrente accesa -> lo stantuffo viene tirato dentro */
+@keyframes soPlunger{0%,40%{transform:translateX(0)}48%,88%{transform:translateX(-30px)}96%,100%{transform:translateX(0)}}
+@keyframes soOn{0%,41%{opacity:0}46%,88%{opacity:1}92%,100%{opacity:0}}
+@keyframes soOff{0%,41%{opacity:1}46%,88%{opacity:0}92%,100%{opacity:1}}
+@keyframes soSpring{0%,40%{transform:scaleX(1)}48%,88%{transform:scaleX(.4)}96%,100%{transform:scaleX(1)}}
+.soPlunger{animation:soPlunger 3.2s ease-in-out infinite}
+.soOn{animation:soOn 3.2s linear infinite}.soOff{animation:soOff 3.2s linear infinite}
+.soSpring{transform-box:view-box;transform-origin:78px 80px;animation:soSpring 3.2s ease-in-out infinite}
+
+/* Ponte H */
+@keyframes hbFlow{to{stroke-dashoffset:-24}}
+.hbFlow{stroke-dasharray:8 8;animation:hbFlow .7s linear infinite}
+@keyframes spinCw{to{transform:rotate(360deg)}}
+@keyframes spinCcw{to{transform:rotate(-360deg)}}
+.spinCw{transform-box:view-box;transform-origin:168px 112px;animation:spinCw 1.6s linear infinite}
+.spinCcw{transform-box:view-box;transform-origin:168px 112px;animation:spinCcw 1.6s linear infinite}

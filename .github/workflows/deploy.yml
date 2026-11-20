@@ -24,6 +24,8 @@ jobs:
         with:
           node-version: 22
           cache: npm
+      - name: Controlla e genera i dati delle schede
+        run: python3 tools/build_data.py
       - run: npm ci
       - run: npm run build
       - uses: actions/upload-pages-artifact@v3

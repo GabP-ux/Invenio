@@ -53,10 +53,14 @@ Se colleghi GitHub a Claude (Impostazioni di claude.ai › Connettori), le pross
 3. Scorri e scegli **Aggiungi alla schermata Home** → **Aggiungi**.
 4. Usarla sempre dall'icona: Safari cancella i dati dei siti non aperti per 7 giorni, ma non quelli delle app aggiunte alla Home.
 
-## Aggiornare i contenuti
+## Aggiungere schede (la filiera dei dati)
 
-1. Le nuove schede si aggiungono in `tools/build_data.py` (o in un nuovo pacchetto).
-2. `python3 tools/build_data.py` rigenera i file in `public/data/` e controlla che collegamenti, principi e risposte del quiz siano coerenti.
-3. `npm install` (solo la prima volta), poi `npm run build`: la cartella `dist/` è la nuova versione da caricare al posto della vecchia.
+I contenuti sono divisi in pacchetti: `tools/content/sensori.py`, `tools/content/attuatori.py`… L'indice di aree, sottocategorie (ricalcate dai cataloghi dei distributori) e principi fisici è in `tools/content/indice.py`.
+
+1. **Scrivi** le schede nel file del pacchetto, partendo dalla voce di Wikipedia indicata in `source`. Per le immagini basta il nome del file su Wikimedia Commons e la didascalia.
+2. **Crediti**: `python3 tools/commons.py` legge da Commons autore e licenza di ogni immagine e segnala i file che non esistono.
+3. **Controlli e dati**: `python3 tools/build_data.py` controlla campi mancanti, collegamenti, principi, risposte del quiz e crediti, poi scrive i file in `public/data/`. Se trova un errore si ferma e lo dice.
+4. **Provino**: `python3 tools/contact_sheet.py attuatori` mette in un unico foglio tutte le foto del pacchetto con la loro didascalia, per controllare a occhio che ogni foto mostri davvero quello che dice.
+5. **Pubblica**: carica le modifiche su GitHub. La pubblicazione automatica rifà i controlli del punto 3 e, se sono a posto, aggiorna l'app.
 
 L'app si aggiorna da sola sul telefono alla prossima apertura con connessione.

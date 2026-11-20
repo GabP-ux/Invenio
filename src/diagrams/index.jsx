@@ -198,12 +198,131 @@ export function UltrasoundAnim () {
   )
 }
 
-export const ANIM = { lidar: LidarAnim, ultrasuoni: UltrasoundAnim, pir: PirAnim, hall: HallAnim, humidity: HumidityAnim }
-export const SIM = { lidar: LidarSim, hall: HallSim, humidity: HumiditySim }
+
+/* ---------- Motore passo-passo ---------- */
+export function StepperAnim () {
+  const coil = (x, y, w, h, cls, label, lx, ly) => (
+    <g>
+      <rect class={'stC ' + cls} x={x} y={y} width={w} height={h} rx="4" fill="#1A1F2A" stroke="#F0B44C" stroke-width="1.3" />
+      <text x={lx} y={ly} fill="#A0A7B4" style={T} font-size="10" text-anchor="middle">{label}</text>
+    </g>
+  )
+  const rows = [['1', ''], ['2', 'stC2'], ['3', 'stC3'], ['4', 'stC4']]
+  return (
+    <svg viewBox="0 0 336 170" role="img" aria-label="Quattro bobine si accendono una alla volta in senso orario; il rotore scatta ogni volta verso la bobina accesa">
+      <circle cx="96" cy="85" r="58" fill="none" stroke="#2A2F3A" />
+      {coil(84, 14, 24, 22, '', '1', 96, 10)}
+      {coil(145, 73, 22, 24, 'stC2', '2', 174, 88)}
+      {coil(84, 134, 24, 22, 'stC3', '3', 96, 166)}
+      {coil(25, 73, 22, 24, 'stC4', '4', 18, 88)}
+      <circle cx="96" cy="85" r="30" fill="#161B25" stroke="#3A4050" />
+      <g class="stRot">
+        <path d="M96 85 L96 59" stroke="#8FA8FF" stroke-width="5" stroke-linecap="round" />
+        <path d="M89 64 L96 54 L103 64 Z" fill="#8FA8FF" />
+        <circle cx="96" cy="85" r="4" fill="#ECEEF3" />
+      </g>
+      <text x="262" y="16" fill="#A0A7B4" style={T} font-size="9" text-anchor="middle">impulsi alle bobine</text>
+      {rows.map(([n], i) => {
+        const y = 36 + i * 28; const x0 = 200 + i * 31
+        return (
+          <g key={n}>
+            <text x="192" y={y + 4} fill="#A0A7B4" style={T} font-size="10" text-anchor="end">{n}</text>
+            <path d={`M200 ${y + 6} H${x0} V${y - 6} H${x0 + 31} V${y + 6} H324`} fill="none" stroke="#F0B44C" stroke-width="1.5" />
+          </g>
+        )
+      })}
+      <line class="stHead" x1="200" y1="24" x2="200" y2="134" stroke="#ECEEF3" stroke-opacity=".6" stroke-dasharray="2 3" />
+      <text x="262" y="152" fill="#A0A7B4" style={T} font-size="9" text-anchor="middle">un impulso = un passo</text>
+    </svg>
+  )
+}
+
+/* ---------- Solenoide ---------- */
+export function SolenoidAnim () {
+  return (
+    <svg viewBox="0 0 336 160" role="img" aria-label="Quando passa corrente nella bobina, lo stantuffo di ferro viene tirato dentro; quando la corrente si spegne, la molla lo spinge fuori">
+      <rect x="70" y="52" width="150" height="56" rx="6" fill="#161B25" stroke="#3A4050" />
+      {Array.from({ length: 14 }).map((_, i) => <path key={i} d={`M${78 + i * 10} 52 l6 56`} stroke="#B98A3A" stroke-width="2" />)}
+      <rect x="70" y="66" width="150" height="28" fill="#0E1117" stroke="#2A2F3A" />
+      <g class="soSpring"><path d="M78 80 l6 -8 l6 16 l6 -16 l6 16 l6 -8" fill="none" stroke="#A0A7B4" stroke-width="1.4" /></g>
+      <g class="soPlunger">
+        <rect x="120" y="69" width="150" height="22" rx="3" fill="#5A6378" stroke="#8C96AA" />
+        <text x="240" y="84" fill="#ECEEF3" style={T} font-size="9" text-anchor="middle">ferro</text>
+      </g>
+      <g class="soOn">
+        <path d="M80 60 Q145 40 210 60" fill="none" stroke="#8FA8FF" stroke-dasharray="3 4" />
+        <path d="M80 100 Q145 120 210 100" fill="none" stroke="#8FA8FF" stroke-dasharray="3 4" />
+        <path class="hbFlow" d="M30 130 H70 V108 M220 108 V130 H306" fill="none" stroke="#FFD27A" stroke-width="2" />
+        <text x="145" y="30" fill="#8FA8FF" style={T} font-size="10" text-anchor="middle">corrente accesa: la bobina tira</text>
+        <path d="M150 140 L120 140 M126 135 L120 140 L126 145" stroke="#ECEEF3" stroke-width="1.4" fill="none" />
+      </g>
+      <g class="soOff">
+        <path d="M30 130 H70 V108 M220 108 V130 H306" fill="none" stroke="#3A4050" stroke-width="2" />
+        <text x="145" y="30" fill="#A0A7B4" style={T} font-size="10" text-anchor="middle">corrente spenta: la molla spinge fuori</text>
+      </g>
+      <text x="26" y="134" fill="#FFD27A" style={T} font-size="10" text-anchor="end">+</text>
+      <text x="312" y="134" fill="#A0A7B4" style={T} font-size="10">−</text>
+    </svg>
+  )
+}
+
+/* ---------- Ponte H interattivo: il percorso della corrente ---------- */
+const HB = {
+  off: { closed: [], path: null, spin: null, text: 'Tutti gli interruttori aperti: nessuna corrente, il motore è fermo.' },
+  avanti: { closed: ['S1', 'S4'], path: 'M70 20 V58 M70 82 V112 H140 M196 112 H266 V142 M266 166 V204', spin: 'spinCw', text: 'S1 e S4 chiusi: la corrente entra nel motore da sinistra ed esce a destra. Il motore gira in un verso.' },
+  indietro: { closed: ['S2', 'S3'], path: 'M266 20 V58 M266 82 V112 H196 M140 112 H70 V142 M70 166 V204', spin: 'spinCcw', text: 'S2 e S3 chiusi: la corrente attraversa il motore da destra a sinistra. Il motore gira al contrario.' },
+  corto: { closed: ['S1', 'S3'], path: 'M70 20 V58 M70 82 V142 M70 166 V204', spin: null, short: true, text: 'Errore! S1 e S3 sono sullo stesso lato: la corrente va dritta da + a − senza passare dal motore. È un cortocircuito che brucia i transistor.' }
+}
+function Switch ({ x, y, name, closed, label }) {
+  // interruttore verticale tra y e y+24
+  return (
+    <g>
+      <circle cx={x} cy={y} r="3" fill="#ECEEF3" /><circle cx={x} cy={y + 24} r="3" fill="#ECEEF3" />
+      <path d={closed ? `M${x} ${y} L${x} ${y + 24}` : `M${x} ${y} L${x + 14} ${y + 20}`} stroke={closed ? '#ECEEF3' : '#8C96AA'} stroke-width="2.4" stroke-linecap="round" style="transition:d .2s" />
+      <text x={label === 'l' ? x - 12 : x + 12} y={y + 16} fill="#A0A7B4" style={T} font-size="10" text-anchor={label === 'l' ? 'end' : 'start'}>{name}</text>
+    </g>
+  )
+}
+export function HBridgeSim () {
+  const [m, setM] = useState('avanti')
+  const st = HB[m]; const on = (n) => st.closed.includes(n)
+  return (
+    <div class="card" style="padding:14px;display:flex;flex-direction:column;gap:10px">
+      <span class="kicker">Prova tu · dove passa la corrente</span>
+      <div class="fig">
+        <svg viewBox="0 0 336 222" role="img" aria-label={st.text}>
+          <path d="M40 20 H296" stroke="#F28C6B" stroke-width="2" /><text x="34" y="24" fill="#F28C6B" style={T} font-size="11" text-anchor="end">+</text>
+          <path d="M40 204 H296" stroke="#8FA8FF" stroke-width="2" /><text x="34" y="208" fill="#8FA8FF" style={T} font-size="11" text-anchor="end">−</text>
+          <path d="M70 20 V58 M70 82 V142 M70 166 V204 M266 20 V58 M266 82 V142 M266 166 V204 M70 112 H140 M196 112 H266" fill="none" stroke="#3A4050" stroke-width="1.6" />
+          {st.path && <path class="hbFlow" d={st.path} fill="none" stroke={st.short ? '#FF5A4E' : '#FFD27A'} stroke-width="3" stroke-linecap="round" />}
+          <Switch x={70} y={58} name="S1" closed={on('S1')} label="l" />
+          <Switch x={70} y={142} name="S3" closed={on('S3')} label="l" />
+          <Switch x={266} y={58} name="S2" closed={on('S2')} label="r" />
+          <Switch x={266} y={142} name="S4" closed={on('S4')} label="r" />
+          <circle cx="168" cy="112" r="28" fill="#161B25" stroke="#B9A3FF" stroke-width="1.6" />
+          <text x="168" y="116" fill="#ECEEF3" style={T} font-size="12" text-anchor="middle">M</text>
+          {st.spin && <g class={st.spin}><path d="M168 76 A36 36 0 0 1 204 112" fill="none" stroke="#B9A3FF" stroke-width="2" /><path d={st.spin === 'spinCw' ? 'M199 104 L204 112 L209 104' : 'M175 71 L168 76 L175 81'} fill="none" stroke="#B9A3FF" stroke-width="2" /></g>}
+          {st.short && <text x="168" y="160" fill="#FF5A4E" style={T} font-size="11" text-anchor="middle">CORTOCIRCUITO</text>}
+        </svg>
+        <figcaption>linea gialla = percorso della corrente (dal + al −)</figcaption>
+      </div>
+      <div class="seg" role="group" aria-label="Interruttori chiusi">
+        {[['off', 'Spento'], ['avanti', 'S1+S4'], ['indietro', 'S2+S3'], ['corto', 'S1+S3']].map(([k, l]) =>
+          <button key={k} aria-pressed={m === k} onClick={() => setM(k)}>{l}</button>)}
+      </div>
+      <p style={'margin:0;font-size:14px;line-height:1.5;color:' + (st.short ? '#FF8A80' : '#C9CED8')}>{st.text}</p>
+    </div>
+  )
+}
+
+export const ANIM = { lidar: LidarAnim, ultrasuoni: UltrasoundAnim, stepper: StepperAnim, solenoid: SolenoidAnim, pir: PirAnim, hall: HallAnim, humidity: HumidityAnim }
+export const SIM = { lidar: LidarSim, hall: HallSim, humidity: HumiditySim, hbridge: HBridgeSim }
 export const CAPTION = {
   lidar: 'd = c × t ÷ 2 · animazione rallentata',
   ultrasuoni: 'd = v × t ÷ 2 · v ≈ 343 m/s nell\'aria · animazione rallentata',
   pir: 'schema semplificato: una sola coppia di zone',
   hall: '× campo magnetico entrante · ● elettroni (verso opposto a I)',
-  humidity: 'schema semplificato'
+  humidity: 'schema semplificato',
+  stepper: 'schema semplificato: 4 passi per giro (un motore vero ne fa di solito 200)',
+  solenoid: 'schema semplificato · bobina, stantuffo di ferro e molla di ritorno'
 }
