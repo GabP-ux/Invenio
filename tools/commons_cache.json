@@ -1,4 +1,8 @@
 {
+ "18650 and 21700 lithium ion battery cell.jpg": {
+  "artist": "Sevenethics",
+  "license": "CC0"
+ },
  "20151124 lidar system scanner of atmosphere National Observatory of Athens Greece 3.jpg": {
   "artist": "Ggia",
   "license": "CC BY-SA 4.0"
@@ -6,6 +10,10 @@
  "25mm light-dependent resistor (LDR) (5).jpg": {
   "artist": "Suyash Dwivedi",
   "license": "CC BY-SA 4.0"
+ },
+ "3PM4 diode bridge, IPRS Baneasa 1988 (01).jpg": {
+  "artist": "155LA3",
+  "license": "CC BY 4.0"
  },
  "400 points breadboard.jpg": {
   "artist": "oomlout",
@@ -15,6 +23,10 @@
   "artist": "oomlout",
   "license": "CC BY-SA 2.0"
  },
+ "7809 (OnSemi) 01.jpg": {
+  "artist": "Retired electrician",
+  "license": "CC0"
+ },
  "A few Jumper Wires.jpg": {
   "artist": "oomlout",
   "license": "CC BY-SA 2.0"
@@ -22,6 +34,10 @@
  "Adafruit GPS Module Breakout.jpg": {
   "artist": "oomlout",
   "license": "CC BY-SA 2.0"
+ },
+ "Alkalinecell.png": {
+  "artist": "autore sconosciuto",
+  "license": "CC BY-SA 3.0"
  },
  "BMP280Sensor.jpg": {
   "artist": "AGermanBeck",
@@ -42,6 +58,10 @@
  "Carbon film resistor cross section.jpg": {
   "artist": "TubeTimeUS",
   "license": "CC BY-SA 4.0"
+ },
+ "Close-up of a polycrystalline solar PV panel.jpg": {
+  "artist": "Guilhem Vellut",
+  "license": "CC BY 2.0"
  },
  "Coaxial cable braided wire.jpg": {
   "artist": "Wtshymanski",
@@ -147,9 +167,21 @@
   "artist": "S. Winkvist",
   "license": "pubblico dominio"
  },
+ "LM2596 buck converter module, MP1584 buck converter module, and SDB628 boost converter module.jpg": {
+  "artist": "Matthew Berardi",
+  "license": "CC BY-SA 4.0"
+ },
+ "LM317 (OnSemi) 01.jpg": {
+  "artist": "Retired electrician",
+  "license": "CC0"
+ },
  "Linear actuator photo.jpg": {
   "artist": "Rsteves00",
   "license": "attribuzione"
+ },
+ "Lithium Polymer Batter.jpg": {
+  "artist": "Tntflash",
+  "license": "CC BY-SA 3.0"
  },
  "Lüsterklemme seitlich.jpg": {
   "artist": "VSchagow",
@@ -251,6 +283,10 @@
   "artist": "SergeMoutou",
   "license": "CC BY-SA 4.0"
  },
+ "TP4056 board P1089956.jpg": {
+  "artist": "-stk",
+  "license": "CC BY-SA 4.0"
+ },
  "Thermocouple K (2).jpg": {
   "artist": "Harke",
   "license": "pubblico dominio"
@@ -271,12 +307,20 @@
   "artist": "Pleriche",
   "license": "CC BY-SA 4.0"
  },
+ "Voltage Boost Converters.jpg": {
+  "artist": "Ogidya",
+  "license": "CC BY-SA 4.0"
+ },
  "WAGO 221 mechanism.png": {
   "artist": "im_tau",
   "license": "CC BY 4.0"
  },
  "WAGO 221.jpg": {
   "artist": "im_tau",
+  "license": "CC0"
+ },
+ "XL4015-based CC-CV buck converter modules 01.jpg": {
+  "artist": "Retired electrician",
   "license": "CC0"
  }
 }

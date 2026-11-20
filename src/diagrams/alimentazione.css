@@ -1,0 +1,16 @@
+/* regolatore lineare: calore che sale */
+@keyframes linHeat{0%{opacity:0;transform:translateY(4px)}40%{opacity:1}100%{opacity:0;transform:translateY(-8px)}}
+.lin-heat{animation:linHeat 1.1s linear infinite}
+/* batteria al litio: ioni attraverso l'elettrolita (128 px tra i due elettrodi) */
+@keyframes liS{0%{transform:translateX(0);opacity:0}10%,90%{opacity:1}100%{transform:translateX(128px);opacity:0}}
+@keyframes liC{0%{transform:translateX(0);opacity:0}10%,90%{opacity:1}100%{transform:translateX(-128px);opacity:0}}
+.li-s{animation:liS 2.7s linear infinite}.li-c{animation:liC 2.7s linear infinite}
+/* cella solare: fotone, poi elettrone verso N (su) e lacuna verso P (giù) */
+@keyframes csPh{0%{opacity:0;transform:translateY(-12px)}15%,30%{opacity:1;transform:translateY(0)}40%,100%{opacity:0}}
+@keyframes csE{0%,30%{opacity:0;transform:translateY(0)}35%{opacity:1}75%{opacity:1;transform:translateY(-18px)}85%,100%{opacity:0;transform:translateY(-18px)}}
+@keyframes csH{0%,30%{opacity:0;transform:translateY(0)}35%{opacity:1}75%{opacity:1;transform:translateY(40px)}85%,100%{opacity:0;transform:translateY(40px)}}
+.cs-ph{animation:csPh 2.4s ease-out infinite}.cs-e{opacity:0;animation:csE 2.4s ease-in-out infinite}.cs-h{opacity:0;animation:csH 2.4s ease-in-out infinite}
+/* pila alcalina: ioni OH- verso lo zinco al centro */
+@keyframes paL{0%{transform:translateX(0);opacity:0}20%,80%{opacity:1}100%{transform:translateX(16px);opacity:0}}
+@keyframes paR{0%{transform:translateX(0);opacity:0}20%,80%{opacity:1}100%{transform:translateX(-16px);opacity:0}}
+.pa-l{animation:paL 2.1s linear infinite}.pa-r{animation:paR 2.1s linear infinite}

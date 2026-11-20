@@ -7,6 +7,7 @@ import * as Se from './sensori2'
 import * as At from './attuatori2'
 import * as Cn from './connettori'
 import * as Am from './ambiente'
+import * as Al from './alimentazione'
 
 const anim = (A, cap, Sim) => ({ C: ({ mode }) => (mode === 'play' && Sim) ? <Sim /> : <Fig caption={cap}><A /></Fig>, interactive: !!Sim })
 const vis = (C, interactive = false) => ({ C, interactive })
@@ -68,6 +69,14 @@ export const VIS = {
   'sensore-colore': vis(Am.SensoreColore, true),
   'umidita-terreno': vis(Am.UmiditaTerreno, true),
   'polveri-pm': vis(Am.PolveriPm),
+  'regolatore-lineare': vis(Al.RegolatoreLineare, true),
+  'convertitore-buck': vis(Al.ConvertitoreBuck, true),
+  'convertitore-boost': vis(Al.ConvertitoreBoost, true),
+  'ponte-raddrizzatore': vis(Al.PonteRaddrizzatore, true),
+  'batteria-litio': vis(Al.BatteriaLitio, true),
+  'ricarica-litio': vis(Al.RicaricaLitio, true),
+  'cella-solare': vis(Al.CellaSolare, true),
+  'pila-alcalina': vis(Al.PilaAlcalina),
 }
 
 export function Visual ({ k, mode }) {

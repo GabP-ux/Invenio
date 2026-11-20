@@ -17,6 +17,9 @@ areas = [
     {"id": "protezione", "name": "Protezione dei circuiti", "color": "#FF8F80", "pack": "componenti"},
     {"id": "prototipazione", "name": "Prototipazione e basette", "color": "#8FD0A8", "pack": "connettori"},
     {"id": "cavi", "name": "Cavi, fili e gestione dei cavi", "color": "#B8A68C", "pack": "connettori"},
+    {"id": "pmic", "name": "Circuiti integrati – gestione dell'alimentazione", "color": "#F5A65B", "pack": "alimentazione"},
+    {"id": "convertitori", "name": "Alimentatori da scheda (convertitori DC-DC)", "color": "#D98CF0", "pack": "alimentazione"},
+    {"id": "batterie", "name": "Batterie e accessori", "color": "#7FD08A", "pack": "alimentazione"},
 ]
 # Sottocategorie ricalcate sull'alberatura dei cataloghi dei distributori (es. DigiKey)
 subs = {
@@ -63,6 +66,13 @@ subs = {
     "pressione": ("sensori", "Sensori di pressione"),
     "colore": ("sensori", "Sensori ottici – colore"),
     "polveri": ("sensori", "Sensori di particolato"),
+    "regolatori-lineari": ("pmic", "Regolatori di tensione lineari"),
+    "caricabatterie": ("pmic", "Caricabatterie per batterie"),
+    "dc-dc": ("convertitori", "Convertitori DC-DC"),
+    "ponti": ("semiconduttori", "Ponti raddrizzatori"),
+    "ricaricabili": ("batterie", "Batterie ricaricabili"),
+    "pile": ("batterie", "Batterie non ricaricabili (pile)"),
+    "celle-solari": ("opto", "Celle solari"),
 }
 principles = [
     {"id": "tempo-di-volo", "name": "Tempo di volo", "text": "Si misura quanto tempo impiega un segnale a viaggiare. Conoscendo la sua velocità si ricava la distanza.", "source": {"title": "Wikipedia – Time of flight", "url": "https://en.wikipedia.org/wiki/Time_of_flight"}},
@@ -97,4 +107,8 @@ principles = [
     {"id": "chemioresistenza", "name": "Chemioresistenza", "text": "Alcuni materiali cambiano resistenza elettrica quando certe molecole di gas si posano sulla loro superficie e reagiscono con essa.", "source": {"title": "Wikipedia – Chemiresistor", "url": "https://en.wikipedia.org/wiki/Chemiresistor"}},
     {"id": "assorbimento-ir", "name": "Assorbimento dell'infrarosso", "text": "Ogni gas assorbe la luce infrarossa solo a certe lunghezze d'onda. Più gas c'è sul percorso, meno luce di quella lunghezza d'onda arriva in fondo.", "source": {"title": "Wikipedia – Nondispersive infrared sensor", "url": "https://en.wikipedia.org/wiki/Nondispersive_infrared_sensor"}},
     {"id": "diffusione-luce", "name": "Diffusione della luce", "text": "Una particella colpita da un raggio di luce ne devia una parte in altre direzioni. Più la particella è grande, più luce devia.", "source": {"title": "Wikipedia – Diffusione (ottica)", "url": "https://it.wikipedia.org/wiki/Diffusione_(ottica)"}},
+    {"id": "regolazione-lineare", "name": "Regolazione lineare", "text": "Un transistor in serie fa da resistenza variabile: un circuito confronta l'uscita con un riferimento e lo regola in continuo, così passa solo la tensione voluta. La differenza si trasforma in calore.", "source": {"title": "Wikipedia – Linear regulator", "url": "https://en.wikipedia.org/wiki/Linear_regulator"}},
+    {"id": "commutazione", "name": "Conversione a commutazione", "text": "Un interruttore elettronico si apre e si chiude migliaia di volte al secondo; una bobina e un condensatore immagazzinano e restituiscono l'energia. Cambiando quanto tempo resta chiuso si sceglie la tensione d'uscita, quasi senza sprecare energia.", "source": {"title": "Wikipedia – Switched-mode power supply", "url": "https://en.wikipedia.org/wiki/Switched-mode_power_supply"}},
+    {"id": "pila-elettrochimica", "name": "Pila elettrochimica", "text": "Due materiali diversi immersi in un elettrolita: uno cede elettroni, l'altro li accetta. Gli elettroni fanno il giro nel circuito esterno, gli ioni chiudono il percorso dentro la pila.", "source": {"title": "Wikipedia – Cella galvanica", "url": "https://it.wikipedia.org/wiki/Cella_galvanica"}},
+    {"id": "carica-cc-cv", "name": "Carica a corrente e tensione costanti", "text": "Le batterie al litio si caricano prima con una corrente fissa finché la tensione arriva al massimo (4,2 V per cella), poi tenendo fissa la tensione mentre la corrente cala da sola.", "source": {"title": "Wikipedia – Lithium-ion battery", "url": "https://en.wikipedia.org/wiki/Lithium-ion_battery"}},
 ]
