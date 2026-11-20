@@ -7,13 +7,33 @@
   "artist": "Suyash Dwivedi",
   "license": "CC BY-SA 4.0"
  },
+ "400 points breadboard.jpg": {
+  "artist": "oomlout",
+  "license": "CC BY-SA 2.0"
+ },
  "5mm Red LED.jpg": {
+  "artist": "oomlout",
+  "license": "CC BY-SA 2.0"
+ },
+ "A few Jumper Wires.jpg": {
   "artist": "oomlout",
   "license": "CC BY-SA 2.0"
  },
  "Adafruit GPS Module Breakout.jpg": {
   "artist": "oomlout",
   "license": "CC BY-SA 2.0"
+ },
+ "BMP280Sensor.jpg": {
+  "artist": "AGermanBeck",
+  "license": "CC BY-SA 4.0"
+ },
+ "Brass crimp-terminal female spade electrical connector.jpg": {
+  "artist": "Suyash Dwivedi",
+  "license": "CC BY-SA 4.0"
+ },
+ "Breadboard.png": {
+  "artist": "Guhuru",
+  "license": "CC0"
  },
  "Brushed DC motor disassembled.jpg": {
   "artist": "Iliakriv",
@@ -23,6 +43,10 @@
   "artist": "TubeTimeUS",
   "license": "CC BY-SA 4.0"
  },
+ "Coaxial cable braided wire.jpg": {
+  "artist": "Wtshymanski",
+  "license": "CC BY-SA 4.0"
+ },
  "Concept of LiDAR.svg": {
   "artist": "Cartographer3d",
   "license": "CC BY-SA 4.0"
@@ -30,6 +54,10 @@
  "Crystal oscillator 4MHz.jpg": {
   "artist": "(copied from en.wikipedia) — Omegatron 18",
   "license": "CC BY-SA 3.0"
+ },
+ "DC Barrel Power Jack Connector (SMD) (12311353693).jpg": {
+  "artist": "SparkFun Electronics from Boulder, USA",
+  "license": "CC BY 2.0"
  },
  "DHT22 digital temperature and humidity sensor module pcb.jpg": {
   "artist": "Suyash Dwivedi",
@@ -55,6 +83,10 @@
   "artist": "Evan-Amos",
   "license": "pubblico dominio"
  },
+ "Female-Female Jumper Wire.jpg": {
+  "artist": "oomlout",
+  "license": "CC BY-SA 2.0"
+ },
  "Floppy drive spindle motor open.jpg": {
   "artist": "Sebastian Koppehel",
   "license": "CC BY 3.0"
@@ -66,6 +98,10 @@
  "FreescaleSemiconductor 3-Axis-MEMS-Accelerometer MMA8452Q 10953-01b.jpg": {
   "artist": "SparkFun",
   "license": "CC BY 2.0"
+ },
+ "Front view of a MH-Z19B Carbon Dioxyde Sensor.jpg": {
+  "artist": "lux",
+  "license": "CC0"
  },
  "G-Sicherung ausgelöst.png": {
   "artist": "SLXViper",
@@ -87,6 +123,26 @@
   "artist": "Steve Jurvetson",
   "license": "CC BY 2.0"
  },
+ "Heat shrink covering.JPG": {
+  "artist": "Steven1108",
+  "license": "CC BY-SA 3.0"
+ },
+ "Heat-shrink tubing.jpg": {
+  "artist": "oomlout",
+  "license": "CC BY-SA 2.0"
+ },
+ "Hohlstecker und Hohlbuchse 5,5x2,5.jpg": {
+  "artist": "Martin Meise",
+  "license": "CC BY-SA 3.0"
+ },
+ "JST CZH hand crimper tool.jpg": {
+  "artist": "4300streetcar",
+  "license": "CC BY 4.0"
+ },
+ "Komponenten des Feinstaubsensoren-Bausatzes beim Workshop auf dem 33c3 2016.jpg": {
+  "artist": "Iwess",
+  "license": "CC0"
+ },
  "LIDAR equipped mobile robot.jpg": {
   "artist": "S. Winkvist",
   "license": "pubblico dominio"
@@ -94,6 +150,10 @@
  "Linear actuator photo.jpg": {
   "artist": "Rsteves00",
   "license": "attribuzione"
+ },
+ "Lüsterklemme seitlich.jpg": {
+  "artist": "VSchagow",
+  "license": "CC BY-SA 4.0"
  },
  "MOSFET transistors.jpg": {
   "artist": "Mister rf",
@@ -143,6 +203,10 @@
   "artist": "Stefan Riepl (Quark48)",
   "license": "CC BY-SA 2.0 de"
  },
+ "RG-6 coaxial cable.png": {
+  "artist": "User",
+  "license": "CC BY-SA 3.0"
+ },
  "Rotary Encoder.jpg": {
   "artist": "Projuktiponno",
   "license": "CC BY-SA 4.0"
@@ -155,12 +219,24 @@
   "artist": "Suyash Dwivedi",
   "license": "CC BY-SA 4.0"
  },
+ "Screw-type terminal block, 10mm spacing 03.jpg": {
+  "artist": "Retired electrician",
+  "license": "CC0"
+ },
+ "Sensirion CO2 Humidity and Temperature Sensor - SCD30 15112.jpg": {
+  "artist": "SparkFun",
+  "license": "CC BY 2.0"
+ },
  "Servo motor 1530625.JPG": {
   "artist": "Nevit Dilmen",
   "license": "CC BY-SA 3.0"
  },
  "Silicon diode cross section.jpg": {
   "artist": "TubeTimeUS",
+  "license": "CC BY-SA 4.0"
+ },
+ "Soil moisture sensor.JPG": {
+  "artist": "Sealman",
   "license": "CC BY-SA 4.0"
  },
  "Solenoid valve 2019.jpg": {
@@ -171,6 +247,10 @@
   "artist": "SparkFun",
   "license": "CC BY 2.0"
  },
+ "TCS3200Board.png": {
+  "artist": "SergeMoutou",
+  "license": "CC BY-SA 4.0"
+ },
  "Thermocouple K (2).jpg": {
   "artist": "Harke",
   "license": "pubblico dominio"
@@ -179,8 +259,24 @@
   "artist": "Peripitus",
   "license": "CC BY-SA 4.0"
  },
+ "Two USB-C connectors being held.jpg": {
+  "artist": "Logant547",
+  "license": "CC BY 4.0"
+ },
+ "USB Female Type C Connector (46356532451).jpg": {
+  "artist": "SparkFun Electronics from Boulder, USA",
+  "license": "CC BY 2.0"
+ },
  "Unmounted strain gauge.jpg": {
   "artist": "Pleriche",
   "license": "CC BY-SA 4.0"
+ },
+ "WAGO 221 mechanism.png": {
+  "artist": "im_tau",
+  "license": "CC BY 4.0"
+ },
+ "WAGO 221.jpg": {
+  "artist": "im_tau",
+  "license": "CC0"
  }
 }

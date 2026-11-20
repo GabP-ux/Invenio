@@ -5,6 +5,8 @@ import { LidarAnim, LidarSim, UltrasoundAnim, PirAnim, HallAnim, HallSim, Humidi
 import * as Co from './componenti'
 import * as Se from './sensori2'
 import * as At from './attuatori2'
+import * as Cn from './connettori'
+import * as Am from './ambiente'
 
 const anim = (A, cap, Sim) => ({ C: ({ mode }) => (mode === 'play' && Sim) ? <Sim /> : <Fig caption={cap}><A /></Fig>, interactive: !!Sim })
 const vis = (C, interactive = false) => ({ C, interactive })
@@ -50,7 +52,22 @@ export const VIS = {
   'memoria-forma': vis(At.MemoriaForma, true),
   elettrovalvola: vis(At.Elettrovalvola),
   altoparlante: vis(At.Altoparlante),
-  peltier: vis(At.Peltier, true)
+  peltier: vis(At.Peltier, true),
+  'morsetto-leva': vis(Cn.MorsettoLeva, true),
+  'morsettiera-vite': vis(Cn.MorsettieraVite, true),
+  crimpaggio: vis(Cn.Crimpaggio, true),
+  'header-dupont': vis(Cn.HeaderDupont, true),
+  'usb-c': vis(Cn.UsbC, true),
+  'jack-dc': vis(Cn.JackDc, true),
+  coassiale: vis(Cn.Coassiale),
+  breadboard: vis(Cn.Breadboard, true),
+  termorestringente: vis(Cn.Termorestringente, true),
+  'gas-mox': vis(Am.GasMox, true),
+  'co2-ndir': vis(Am.Co2Ndir, true),
+  barometro: vis(Am.Barometro, true),
+  'sensore-colore': vis(Am.SensoreColore, true),
+  'umidita-terreno': vis(Am.UmiditaTerreno, true),
+  'polveri-pm': vis(Am.PolveriPm),
 }
 
 export function Visual ({ k, mode }) {

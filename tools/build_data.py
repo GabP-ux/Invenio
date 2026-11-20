@@ -16,6 +16,8 @@ PACKS = [  # ordine dei pacchetti: id, nome mostrato
     ("sensori", "Sensori"),
     ("attuatori", "Attuatori e motori"),
     ("componenti", "Componenti di base"),
+    ("connettori", "Connettori e cablaggi"),
+    ("ambiente", "Sensori ambientali"),
 ]
 OUT = os.path.join(os.path.dirname(__file__), '..', 'public', 'data')
 

@@ -2,7 +2,7 @@
 areas = [
     {"id": "sensori", "name": "Sensori e trasduttori", "color": "#F0B44C", "pack": "sensori"},
     {"id": "rf", "name": "RF e wireless", "color": "#6FD3C1", "pack": "sensori"},
-    {"id": "connettori", "name": "Connettori e interconnessioni", "color": "#E58AB8", "pack": None},
+    {"id": "connettori", "name": "Connettori e interconnessioni", "color": "#E58AB8", "pack": "connettori"},
     {"id": "motori", "name": "Motori, attuatori e driver", "color": "#B9A3FF", "pack": "attuatori"},
     {"id": "opto", "name": "Optoelettronica", "color": "#F28C6B", "pack": "componenti"},
     {"id": "interruttori", "name": "Interruttori e relè", "color": "#9FD36F", "pack": "attuatori"},
@@ -15,6 +15,8 @@ areas = [
     {"id": "cristalli", "name": "Cristalli, oscillatori e risonatori", "color": "#C9D7EA", "pack": "componenti"},
     {"id": "potenziometri", "name": "Potenziometri e resistori variabili", "color": "#E0A3D0", "pack": "componenti"},
     {"id": "protezione", "name": "Protezione dei circuiti", "color": "#FF8F80", "pack": "componenti"},
+    {"id": "prototipazione", "name": "Prototipazione e basette", "color": "#8FD0A8", "pack": "connettori"},
+    {"id": "cavi", "name": "Cavi, fili e gestione dei cavi", "color": "#B8A68C", "pack": "connettori"},
 ]
 # Sottocategorie ricalcate sull'alberatura dei cataloghi dei distributori (es. DigiKey)
 subs = {
@@ -49,6 +51,18 @@ subs = {
     "quarzi": ("cristalli", "Cristalli e oscillatori"),
     "potenziometri-rot": ("potenziometri", "Potenziometri rotativi"),
     "fusibili": ("protezione", "Fusibili"),
+    "morsettiere": ("connettori", "Morsettiere"),
+    "terminali": ("connettori", "Terminali a crimpare"),
+    "rettangolari": ("connettori", "Connettori rettangolari (header e jumper)"),
+    "usb": ("connettori", "Connettori USB"),
+    "alimentazione": ("connettori", "Connettori di alimentazione (barrel)"),
+    "coassiali": ("cavi", "Cavi coassiali"),
+    "breadboard": ("prototipazione", "Breadboard senza saldatura"),
+    "guaine": ("cavi", "Guaine termorestringenti"),
+    "gas": ("sensori", "Sensori di gas"),
+    "pressione": ("sensori", "Sensori di pressione"),
+    "colore": ("sensori", "Sensori ottici – colore"),
+    "polveri": ("sensori", "Sensori di particolato"),
 }
 principles = [
     {"id": "tempo-di-volo", "name": "Tempo di volo", "text": "Si misura quanto tempo impiega un segnale a viaggiare. Conoscendo la sua velocità si ricava la distanza.", "source": {"title": "Wikipedia – Time of flight", "url": "https://en.wikipedia.org/wiki/Time_of_flight"}},
@@ -65,7 +79,7 @@ principles = [
     {"id": "elettromagnete", "name": "Elettromagnete", "text": "Una bobina di filo percorsa da corrente diventa una calamita: attira il ferro finché passa la corrente.", "source": {"title": "Wikipedia – Elettromagnete", "url": "https://it.wikipedia.org/wiki/Elettromagnete"}},
     {"id": "retroazione", "name": "Retroazione (anello chiuso)", "text": "Un sistema misura dove si trova, lo confronta con dove dovrebbe essere e corregge la differenza, di continuo.", "source": {"title": "Wikipedia – Retroazione", "url": "https://it.wikipedia.org/wiki/Retroazione"}},
     {"id": "piezo-inverso", "name": "Effetto piezoelettrico inverso", "text": "Alcuni cristalli e ceramiche si deformano leggermente quando ricevono una tensione elettrica.", "source": {"title": "Wikipedia – Piezoelettricità", "url": "https://it.wikipedia.org/wiki/Piezoelettricit%C3%A0"}},
-    {"id": "memoria-di-forma", "name": "Memoria di forma", "text": "Alcune leghe metalliche, deformate a freddo, tornano alla forma \"ricordata\" quando vengono scaldate.", "source": {"title": "Wikipedia – Shape-memory alloy", "url": "https://en.wikipedia.org/wiki/Shape-memory_alloy"}},
+    {"id": "memoria-di-forma", "name": "Memoria di forma", "text": "Alcune leghe metalliche e alcuni polimeri, deformati e \"congelati\" in una nuova forma, tornano alla forma ricordata quando vengono scaldati.", "source": {"title": "Wikipedia – Shape-memory alloy", "url": "https://en.wikipedia.org/wiki/Shape-memory_alloy"}},
     {"id": "massa-sbilanciata", "name": "Massa sbilanciata", "text": "Un peso fissato fuori centro su un albero che gira tira da tutte le parti a turno: l'oggetto vibra.", "source": {"title": "Wikipedia – Vibrating alert", "url": "https://en.wikipedia.org/wiki/Vibrating_alert"}},
     {"id": "vite", "name": "Vite e madrevite", "text": "Una vite che gira dentro un dado bloccato lo fa avanzare: la rotazione diventa movimento in linea retta.", "source": {"title": "Wikipedia – Leadscrew", "url": "https://en.wikipedia.org/wiki/Leadscrew"}},
     {"id": "peltier", "name": "Effetto Peltier", "text": "Facendo passare corrente attraverso la giunzione tra due materiali diversi, una faccia si raffredda e l'altra si scalda. È il fratello inverso dell'effetto Seebeck.", "source": {"title": "Wikipedia – Effetto Peltier", "url": "https://it.wikipedia.org/wiki/Effetto_Peltier"}},
@@ -77,4 +91,10 @@ principles = [
     {"id": "amplificazione", "name": "Amplificazione", "text": "Un piccolo segnale (una corrente o una tensione) comanda una corrente molto più grande presa da un'alimentazione.", "source": {"title": "Wikipedia – Transistor", "url": "https://en.wikipedia.org/wiki/Transistor"}},
     {"id": "partitore", "name": "Partitore di tensione", "text": "Due resistenze in fila si dividono la tensione in proporzione al loro valore: il punto in mezzo dà una tensione intermedia.", "source": {"title": "Wikipedia – Partitore di tensione", "url": "https://it.wikipedia.org/wiki/Partitore_di_tensione"}},
     {"id": "effetto-joule", "name": "Effetto Joule", "text": "Una corrente che attraversa un conduttore lo scalda: il calore prodotto cresce con il quadrato della corrente.", "source": {"title": "Wikipedia – Effetto Joule", "url": "https://it.wikipedia.org/wiki/Effetto_Joule"}},
+    {"id": "contatto-pressione", "name": "Contatto a pressione", "text": "Due metalli si toccano davvero solo in piccoli punti. Premendoli forte (con una molla, una vite o deformandoli) i punti di contatto aumentano e la resistenza del contatto scende.", "source": {"title": "Wikipedia – Electrical contact resistance", "url": "https://en.wikipedia.org/wiki/Electrical_contact_resistance"}},
+    {"id": "schermatura", "name": "Schermatura", "text": "Un involucro conduttivo collegato a massa tiene dentro i campi del segnale e fuori i disturbi esterni.", "source": {"title": "Wikipedia – Electromagnetic shielding", "url": "https://en.wikipedia.org/wiki/Electromagnetic_shielding"}},
+    {"id": "connessione-comune", "name": "Contatti in comune", "text": "Più punti collegati alla stessa striscia di metallo sono elettricamente un unico nodo: qualunque cosa infili lì è collegata a tutte le altre.", "source": {"title": "Wikipedia – Breadboard", "url": "https://en.wikipedia.org/wiki/Breadboard"}},
+    {"id": "chemioresistenza", "name": "Chemioresistenza", "text": "Alcuni materiali cambiano resistenza elettrica quando certe molecole di gas si posano sulla loro superficie e reagiscono con essa.", "source": {"title": "Wikipedia – Chemiresistor", "url": "https://en.wikipedia.org/wiki/Chemiresistor"}},
+    {"id": "assorbimento-ir", "name": "Assorbimento dell'infrarosso", "text": "Ogni gas assorbe la luce infrarossa solo a certe lunghezze d'onda. Più gas c'è sul percorso, meno luce di quella lunghezza d'onda arriva in fondo.", "source": {"title": "Wikipedia – Nondispersive infrared sensor", "url": "https://en.wikipedia.org/wiki/Nondispersive_infrared_sensor"}},
+    {"id": "diffusione-luce", "name": "Diffusione della luce", "text": "Una particella colpita da un raggio di luce ne devia una parte in altre direzioni. Più la particella è grande, più luce devia.", "source": {"title": "Wikipedia – Diffusione (ottica)", "url": "https://it.wikipedia.org/wiki/Diffusione_(ottica)"}},
 ]
