@@ -1,13 +1,8 @@
 import { useEffect, useRef, useState } from 'preact/hooks'
 import { byId, index, breadcrumb, areaById, subById } from '../data'
-import { state, moveToFolder, addFolder, renameFolder, deleteFolder, toggleSave, exportBackup, importBackup } from '../store'
-import { Icon, WImg } from '../components/ui'
+import { state, moveToFolder, addFolder, renameFolder, deleteFolder, toggleSave } from '../store'
+import { Icon, WImg, Sheet } from '../components/ui'
 
-function Sheet ({ open, onClose, children, label }) {
-  const ref = useRef()
-  useEffect(() => { const d = ref.current; if (!d) return; if (open && !d.open) d.showModal(); if (!open && d.open) d.close() }, [open])
-  return <dialog ref={ref} class="sheet-dlg" aria-label={label} onClose={onClose} onClick={(e) => { if (e.target === ref.current) onClose() }}><div class="dlg">{children}</div></dialog>
-}
 
 function Row ({ id, onMove }) {
   const c = byId.value[id]; if (!c) return null
@@ -111,30 +106,9 @@ function ByCategory ({ onMove }) {
   )
 }
 
-function BackupSheet ({ open, onClose }) {
-  const [msg, setMsg] = useState('')
-  const [usage, setUsage] = useState('')
-  useEffect(() => {
-    if (open && navigator.storage?.estimate) navigator.storage.estimate().then(e => setUsage(`Spazio usato da Invenio: ${(e.usage / 1048576).toFixed(1)} MB`)).catch(() => {})
-  }, [open])
-  return (
-    <Sheet open={open} onClose={onClose} label="Backup">
-      <div style="font-family:var(--display);font-size:18px;font-weight:600">Backup dei tuoi dati</div>
-      <p class="muted" style="margin:0;font-size:13px;line-height:1.5">Salvati, cartelle e progressi restano solo su questo telefono. Esporta un file ogni tanto per non perderli.</p>
-      <button class="btn primary" onClick={exportBackup}>Esporta backup</button>
-      <label class="btn" style="cursor:pointer">Importa da file
-        <input type="file" accept="application/json" style="display:none" onChange={async (e) => { try { await importBackup(e.currentTarget.files[0]); setMsg('Backup importato.') } catch (err) { setMsg('File non valido.') } }} />
-      </label>
-      {msg && <div role="status" style="font-size:13px">{msg}</div>}
-      {usage && <div class="mono muted" style="font-size:11px">{usage}</div>}
-    </Sheet>
-  )
-}
-
 export function Saved () {
   const [tab, setTab] = useState('progetti')
   const [moving, setMoving] = useState(null)
-  const [backup, setBackup] = useState(false)
   const [newF, setNewF] = useState(false)
   const count = Object.keys(state.value.saved).length
   return (
@@ -143,7 +117,7 @@ export function Saved () {
         <h1>Salvati</h1>
         <div style="display:flex;gap:4px">
           <button class="btn small" onClick={() => setNewF(true)}><Icon.plus />Cartella</button>
-          <button class="icon-btn" aria-label="Backup dei dati" onClick={() => setBackup(true)}><Icon.more /></button>
+          <a class="icon-btn" aria-label="Impostazioni e backup" href="#/impostazioni" style="color:#A0A7B4"><Icon.gear /></a>
         </div>
       </header>
       <div style="padding:0 16px 12px">
@@ -158,7 +132,6 @@ export function Saved () {
           : tab === 'progetti' ? <Projects onMove={setMoving} /> : <ByCategory onMove={setMoving} />}
       </main>
       <MoveSheet id={moving} onClose={() => setMoving(null)} />
-      <BackupSheet open={backup} onClose={() => setBackup(false)} />
       <Sheet open={newF} onClose={() => setNewF(false)} label="Nuova cartella">
         <div style="font-family:var(--display);font-size:18px;font-weight:600">Nuova cartella di progetto</div>
         <form class="field" onSubmit={(e) => { e.preventDefault(); const v = e.currentTarget.elements.n.value; if (v.trim()) { addFolder(v); setNewF(false); e.currentTarget.reset() } }}>

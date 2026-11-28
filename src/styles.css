@@ -162,3 +162,34 @@ dialog.sheet-dlg::backdrop{background:rgba(0,0,0,.55)}
 .quiz-vis .vis > :not(figure),.quiz-vis figcaption{display:none}
 .quiz-vis .fig{margin:0}
 button.chip{cursor:pointer;font:inherit}
+/* spunta "studiato" */
+.studied button{all:unset;box-sizing:border-box;width:100%;display:flex;align-items:center;gap:14px;padding:16px;border-radius:16px;border:1.5px dashed #3A4050;background:#10131A;cursor:pointer}
+.studied button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.studied .box{width:30px;height:30px;border-radius:9px;border:2px solid #5A6378;display:grid;place-items:center;flex-shrink:0;color:#0B0D12;transition:background .2s,border-color .2s}
+.studied b{font-size:15px}.studied small{font-size:12px;color:var(--muted)}
+.studied.on button{border-style:solid;border-color:#6FD3C1;background:#10241F}
+.studied.on .box{background:#6FD3C1;border-color:#6FD3C1}
+.studied.on b{color:#6FD3C1}
+.studied-badge{display:inline-flex;align-items:center;gap:4px;font:600 10.5px var(--mono);color:#6FD3C1;border:1px solid #6FD3C155;border-radius:20px;padding:2px 8px;white-space:nowrap}
+/* impostazioni */
+.settings{padding:14px 16px 28px;display:flex;flex-direction:column;gap:18px}
+.settings section{display:flex;flex-direction:column;gap:8px}
+.set-card{padding:14px;display:flex;flex-direction:column;gap:10px;border-radius:16px}
+.set-stat{display:flex;justify-content:space-between;font-size:14px}
+.set-row{all:unset;box-sizing:border-box;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0;cursor:pointer;border-bottom:1px solid var(--line-soft)}
+.set-row:last-child{border-bottom:0}
+.set-row b{font-size:14px;font-weight:600}.set-row small{font-size:12px;color:var(--muted);line-height:1.4}
+.set-row:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:8px}
+.switch{width:46px;height:28px;border-radius:14px;background:#2A2F3A;position:relative;flex-shrink:0;transition:background .2s}
+.switch span{position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#ECEEF3;transition:transform .2s}
+.switch.on{background:var(--accent)}.switch.on span{transform:translateX(18px)}
+.danger{border-color:#F28C6B44}
+.danger-btn{border-color:#F28C6B;color:#F28C6B;background:transparent}
+.set-check{display:flex;gap:10px;align-items:flex-start;font-size:13px;line-height:1.45;color:var(--text-2)}
+.set-check input{width:20px;height:20px;accent-color:#F28C6B;flex-shrink:0}
+/* percorso nelle aree */
+.level{display:flex;flex-direction:column;gap:8px}
+.level-head{display:flex;align-items:center;gap:12px}
+.level-n{width:30px;height:30px;border-radius:50%;border:1.5px solid #8FA8FF;color:#8FA8FF;display:grid;place-items:center;font-size:13px;flex-shrink:0}
+/* animazioni ridotte */
+.calm *,.calm *::before,.calm *::after{animation:none!important;transition:none!important}

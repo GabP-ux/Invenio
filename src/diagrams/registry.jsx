@@ -8,6 +8,7 @@ import * as At from './attuatori2'
 import * as Cn from './connettori'
 import * as Am from './ambiente'
 import * as Al from './alimentazione'
+import * as Fo from './fondamenti'
 
 const anim = (A, cap, Sim) => ({ C: ({ mode }) => (mode === 'play' && Sim) ? <Sim /> : <Fig caption={cap}><A /></Fig>, interactive: !!Sim })
 const vis = (C, interactive = false) => ({ C, interactive })
@@ -77,6 +78,15 @@ export const VIS = {
   'ricarica-litio': vis(Al.RicaricaLitio, true),
   'cella-solare': vis(Al.CellaSolare, true),
   'pila-alcalina': vis(Al.PilaAlcalina),
+  'tensione-corrente': vis(Fo.TensioneCorrente, true),
+  'serie-parallelo': vis(Fo.SerieParallelo, true),
+  'corrente-alternata': vis(Fo.CorrenteAlternata),
+  trasformatore: vis(Fo.Trasformatore, true),
+  multimetro: vis(Fo.Multimetro, true),
+  oscilloscopio: vis(Fo.Oscilloscopio, true),
+  saldatore: vis(Fo.Saldatore, true),
+  pulsante: vis(Fo.Pulsante, true),
+  'alimentatore-banco': vis(Fo.AlimentatoreBanco, true),
 }
 
 export function Visual ({ k, mode }) {

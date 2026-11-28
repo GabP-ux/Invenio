@@ -1,6 +1,6 @@
 import { useEffect } from 'preact/hooks'
 import { byId, breadcrumb, areaColor, principleById } from '../data'
-import { state, markSeen, toggleSave } from '../store'
+import { state, markSeen, toggleSave, toggleStudied } from '../store'
 import { VIS, Visual } from '../diagrams/registry'
 import { Icon, WImg, Crumb, Back } from '../components/ui'
 
@@ -98,6 +98,7 @@ export function Detail ({ id }) {
             </section>
           )}
 
+          <Studied id={c.id} />
           <a class="btn" style="border-color:#8FA8FF;color:#8FA8FF" href={'#/mappa/' + c.id}><Icon.map s={18} />Vedi sulla mappa</a>
           <div style="font-size:12px;color:#A0A7B4;border-top:1px solid var(--line-soft);padding-top:14px">
             Testo basato su: <a href={c.source.url} target="_blank" rel="noopener">{c.source.title}</a>
@@ -105,5 +106,22 @@ export function Detail ({ id }) {
         </div>
       </main>
     </div>
+  )
+}
+
+// A fine scheda: sei tu a confermare di aver capito e studiato il concetto
+function Studied ({ id }) {
+  const at = state.value.studied[id]
+  const date = at && new Date(at).toLocaleDateString('it-IT', { day: 'numeric', month: 'long' })
+  return (
+    <section class={'studied' + (at ? ' on' : '')}>
+      <button role="checkbox" aria-checked={!!at} onClick={() => toggleStudied(id)}>
+        <span class="box">{at && <Icon.check s={20} />}</span>
+        <span style="display:flex;flex-direction:column;gap:2px;text-align:left">
+          <b>{at ? 'Concetto studiato' : 'Ho capito e studiato questo concetto'}</b>
+          <small>{at ? `Spuntato il ${date} · tocca per togliere la spunta` : 'Spunta quando sapresti spiegarlo con parole tue'}</small>
+        </span>
+      </button>
+    </section>
   )
 }

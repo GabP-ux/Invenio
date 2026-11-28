@@ -9,6 +9,9 @@ import { Detail } from './screens/Detail'
 import { MapScreen } from './screens/MapScreen'
 import { Quiz } from './screens/Quiz'
 import { Saved } from './screens/Saved'
+import { Settings } from './screens/Settings'
+import { state } from './store'
+import { effect } from '@preact/signals'
 
 function App () {
   if (loadError.value) return <div class="shell"><div class="empty">{loadError.value}<div style="margin-top:16px"><button class="btn primary" onClick={() => location.reload()}>Riprova</button></div></div></div>
@@ -20,9 +23,13 @@ function App () {
   else if (name === 'mappa') screen = <MapScreen focus={params[0]} />
   else if (name === 'quiz') screen = <Quiz />
   else if (name === 'salvati') screen = <Saved />
+  else if (name === 'impostazioni') screen = <Settings />
   else screen = <Feed />
   return <div class="shell">{screen}<Nav current={tab} /></div>
 }
+
+// impostazione "riduci le animazioni"
+effect(() => { document.documentElement.classList.toggle('calm', !!state.value.settings?.calm) })
 
 render(<App />, document.getElementById('app'))
 loadState()

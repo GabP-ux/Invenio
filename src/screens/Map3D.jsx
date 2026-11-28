@@ -3,9 +3,9 @@
 import { useEffect, useMemo, useRef } from 'preact/hooks'
 import { cards, byId, areaById } from '../data'
 import { state } from '../store'
+import { calm } from '../diagrams/kit'
 import { graphData, simulate, clusters, clusterColor } from './mapLayout'
 
-const reduced = typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v))
 const DMIN = 420, DMAX = 3400
 
@@ -54,7 +54,7 @@ export function Map3D ({ selected, onSelect }) {
       if (!s.ptr.size) {
         const f = Math.pow(0.93, dt / 16.7); s.vy *= f; s.vp *= f
         c.yaw += s.vy * dt / 16.7; c.pitch = clamp(c.pitch + s.vp * dt / 16.7, -1.35, 1.35)
-        s.idle += dt; if (!reduced && s.idle > 2500 && Math.abs(s.vy) < 0.001) c.yaw += 0.00012 * dt
+        s.idle += dt; if (!calm() && s.idle > 2500 && Math.abs(s.vy) < 0.001) c.yaw += 0.00012 * dt
       }
       const e = 1 - Math.pow(0.9, dt / 16.7)
       c.tx += (c.goal.x - c.tx) * e; c.ty += (c.goal.y - c.ty) * e; c.tz += (c.goal.z - c.tz) * e; c.dist += (c.goal.dist - c.dist) * e
@@ -119,6 +119,7 @@ export function Map3D ({ selected, onSelect }) {
       ctx.globalAlpha = fade
       ctx.beginPath(); ctx.arc(q.x, q.y, r * 0.55, 0, 7)
       if (seen) { ctx.fillStyle = isP ? '#FFFFFF' : col; ctx.fill() } else { ctx.strokeStyle = col; ctx.lineWidth = 1.2; ctx.stroke() }
+      if (!isP && state.value.studied[n.id]) { ctx.globalAlpha = fade * 0.9; ctx.strokeStyle = '#6FD3C1'; ctx.lineWidth = 1.4; ctx.beginPath(); ctx.arc(q.x, q.y, r * 0.55 + 3, 0, 7); ctx.stroke() }
       if (n.id === S) {
         ctx.globalAlpha = 0.5 + 0.4 * Math.sin(t / 300); ctx.strokeStyle = '#8FA8FF'; ctx.lineWidth = 2
         ctx.beginPath(); ctx.arc(q.x, q.y, r + 6, 0, 7); ctx.stroke()

@@ -1,0 +1,6 @@
+/* oscilloscopio: la traccia si disegna da sinistra a destra */
+@keyframes oscDraw{from{stroke-dashoffset:900}to{stroke-dashoffset:0}}
+.osc-trace{stroke-dasharray:900;animation:oscDraw 1.6s linear infinite}
+/* saldatore: calore che sale */
+@keyframes sdHeat{0%{opacity:0;transform:translateY(4px)}40%{opacity:1}100%{opacity:0;transform:translateY(-8px)}}
+.sd-heat{animation:sdHeat 1.1s linear infinite}

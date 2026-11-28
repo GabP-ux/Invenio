@@ -8,7 +8,9 @@ const empty = () => ({
   seen: {},          // id scheda -> timestamp della prima visione
   saved: {},         // id scheda -> { folder: id cartella | null, at }
   folders: [],       // [{ id, name }]
-  quiz: {},          // "idScheda:indice" -> { box, due }
+  quiz: {},          // "idScheda:indice" -> { box, due, wrong }
+  studied: {},       // id scheda -> timestamp della spunta "ho capito e studiato"
+  settings: { feedOrder: 'percorso', calm: false },
   persistAsked: false
 })
 
@@ -18,7 +20,7 @@ export const ready = signal(false)
 export async function loadState () {
   try {
     const s = await get(KEY)
-    if (s) state.value = { ...empty(), ...s }
+    if (s) state.value = { ...empty(), ...s, settings: { ...empty().settings, ...(s.settings || {}) } }
   } catch (e) { /* storage non disponibile: si lavora in memoria */ }
   ready.value = true
   effect(() => {
@@ -38,6 +40,22 @@ async function askPersist () {
 export const markSeen = (id) => {
   if (state.value.seen[id]) return
   update(s => { s.seen[id] = Date.now() })
+}
+
+export const toggleStudied = (id) => update(s => {
+  if (s.studied[id]) delete s.studied[id]
+  else { s.studied[id] = Date.now(); if (!s.seen[id]) s.seen[id] = Date.now() }
+})
+
+export const setSetting = (k, v) => update(s => { s.settings[k] = v })
+
+// Azzera i progressi: viste, studiate, quiz (e, se richiesto, salvati e cartelle). Le impostazioni restano.
+export const resetProgress = (alsoSaved) => {
+  update(s => {
+    s.seen = {}; s.studied = {}; s.quiz = {}
+    if (alsoSaved) { s.saved = {}; s.folders = [] }
+  })
+  try { sessionStorage.removeItem('invenio-quiz-session'); localStorage.removeItem('invenio-lampo-best') } catch (e) {}
 }
 
 export const isSaved = (id) => !!state.value.saved[id]
@@ -93,5 +111,5 @@ export function exportBackup () {
 export async function importBackup (file) {
   const data = JSON.parse(await file.text())
   if (data.app !== 'invenio' || !data.state) throw new Error('File non valido')
-  state.value = { ...empty(), ...data.state }
+  state.value = { ...empty(), ...data.state, settings: { ...empty().settings, ...(data.state.settings || {}) } }
 }

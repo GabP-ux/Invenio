@@ -1,16 +1,19 @@
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks'
-import { cards, breadcrumb, areaColor } from '../data'
+import { cards, breadcrumb, areaColor, levelOf } from '../data'
 import { state, markSeen, toggleSave } from '../store'
 import { VIS, Visual } from '../diagrams/registry'
 import { Icon, WImg, Crumb } from '../components/ui'
 
 const PACK = 5
 
-// Ordine del giorno: prima le schede mai viste (mescolate in modo stabile per la giornata), poi le altre.
-function dailyOrder (list, seen) {
+// Ordine del giorno: prima le schede mai viste, poi le altre.
+// "percorso": le non viste seguono i livelli (Fondamenti → Strumenti → …), mescolate solo dentro lo stesso livello.
+// "casuale": le non viste sono mescolate in modo stabile per la giornata.
+function dailyOrder (list, seen, mode) {
   const day = new Date().toISOString().slice(0, 10)
   const h = (s) => { let x = 0; for (const ch of day + s) x = (x * 31 + ch.charCodeAt(0)) >>> 0; return x }
-  const unseen = list.filter(c => !seen[c.id]).sort((a, b) => h(a.id) - h(b.id))
+  const lv = mode === 'percorso' ? levelOf : () => 0
+  const unseen = list.filter(c => !seen[c.id]).sort((a, b) => lv(a) - lv(b) || h(a.id) - h(b.id))
   const old = list.filter(c => seen[c.id]).sort((a, b) => seen[a.id] - seen[b.id])
   return [...unseen, ...old]
 }
@@ -33,7 +36,10 @@ function FeedItem ({ c, next, onSaved }) {
   return (
     <section class="feed-item" ref={ref} aria-label={c.name}>
       <article class="card feed-card rise">
-        <Crumb color={color} text={breadcrumb(c)} />
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+          <Crumb color={color} text={breadcrumb(c)} />
+          {state.value.studied[c.id] && <span class="studied-badge"><Icon.check s={13} />studiata</span>}
+        </div>
         <h2>{c.hook}</h2>
         {hasVis
           ? <Visual k={c.diagram} mode="auto" />
@@ -60,7 +66,7 @@ function FeedItem ({ c, next, onSaved }) {
 
 export function Feed () {
   // l'ordine si calcola una volta sola, così le schede non si spostano mentre scorri
-  const order = useMemo(() => dailyOrder(cards.value, state.value.seen), [cards.value.length])
+  const order = useMemo(() => dailyOrder(cards.value, state.value.seen, state.value.settings.feedOrder), [cards.value.length, state.value.settings.feedOrder])
   const [toast, setToast] = useState(0)
   const today = order.slice(0, PACK)
   const seenToday = today.filter(c => state.value.seen[c.id]).length
@@ -69,7 +75,10 @@ export function Feed () {
       <header style="padding:14px 20px 8px;display:flex;flex-direction:column;gap:10px">
         <div style="display:flex;align-items:center;justify-content:space-between">
           <span style="display:flex;align-items:center;gap:8px;font-family:var(--display);font-size:22px;font-weight:700;letter-spacing:-.5px"><Icon.logo />invenio</span>
-          <span class="mono muted" style="font-size:11px">OGGI · {seenToday}/{today.length}</span>
+          <span style="display:flex;align-items:center;gap:6px">
+            <span class="mono muted" style="font-size:11px">OGGI · {seenToday}/{today.length}</span>
+            <a class="icon-btn" href="#/impostazioni" aria-label="Impostazioni" style="color:#A0A7B4"><Icon.gear /></a>
+          </span>
         </div>
         <div class="progress" style={{ gridTemplateColumns: `repeat(${today.length},1fr)` }} aria-hidden="true">
           {today.map((c) => <div key={c.id} class={state.value.seen[c.id] ? 'on' : ''} />)}

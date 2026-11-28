@@ -163,6 +163,7 @@ function Graph ({ selected, onSelect }) {
                     stroke={n.kind === 'principle' ? 'none' : color} stroke-width="1.5" stroke-dasharray={seen ? 'none' : '4 4'} />
                   <text x={n.w / 2} y={n.h / 2 + 4} text-anchor="middle" style={n.kind === 'card' && !seen ? 'fill:#C9CED8' : ''}>{n.label}</text>
                 </g>
+                {n.kind === 'card' && state.value.studied[n.id] && <g class="stud" transform={`translate(${n.w - 6} -6)`}><circle r="8" fill="#6FD3C1" /><path d="M-3.5 0.2 L-1 2.7 L3.6 -2.2" fill="none" stroke="#0B0D12" stroke-width="2" stroke-linecap="round" /></g>}
                 {n.kind === 'card' && <circle class="dot" cx={n.w / 2} cy={n.h / 2} r="9" fill={seen ? color : '#0B0D12'} stroke={color} stroke-width="2" />}
               </g>
             )
@@ -213,32 +214,48 @@ function Sheet ({ id }) {
 }
 
 function Areas () {
-  const [open, setOpen] = useState('sensori')
+  const [open, setOpen] = useState(null)
+  const levels = index.value.levels || [{ id: 'all', name: 'Aree', desc: '', areas: index.value.areas.map(a => a.id) }]
   return (
-    <div class="scroll hide-sb" style="padding:0 16px 16px;display:flex;flex-direction:column;gap:10px">
-      <div class="mono muted" style="font-size:10.5px;letter-spacing:.5px">CATEGORIE COME NEI CATALOGHI DEI DISTRIBUTORI</div>
-      {index.value.areas.map(a => {
-        const list = cards.value.filter(c => c.area === a.id)
-        const seen = list.filter(c => state.value.seen[c.id]).length
-        const subs = index.value.subs.filter(s => s.area === a.id)
-        const isOpen = open === a.id
+    <div class="scroll hide-sb" style="padding:0 16px 16px;display:flex;flex-direction:column;gap:14px">
+      <div class="mono muted" style="font-size:10.5px;letter-spacing:.5px">IL PERCORSO, DAI FONDAMENTI IN SU · CATEGORIE COME NEI CATALOGHI</div>
+      {levels.map((l, li) => {
+        const areas = l.areas.map(id => areaById.value[id]).filter(Boolean)
+        const list = cards.value.filter(c => l.areas.includes(c.area))
+        const st = list.filter(c => state.value.studied[c.id]).length
         return (
-          <div key={a.id} class="card area-card" style={isOpen ? `border-color:${a.color}` : ''}>
-            <button onClick={() => setOpen(isOpen ? null : a.id)} aria-expanded={isOpen} style="all:unset;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px">
-              <span style="display:flex;align-items:center;gap:8px;font-size:15px;font-weight:600"><span class="dot" style={{ width: '10px', height: '10px', background: a.color }} />{a.name}</span>
-              <span class="mono muted" style="font-size:11px">{list.length ? `${seen}/${list.length} VISTE` : 'IN ARRIVO'}</span>
-            </button>
-            {list.length > 0 && <div class="bar"><div style={{ width: (seen / list.length * 100) + '%', background: a.color }} /></div>}
-            {isOpen && subs.map(s => {
-              const sl = list.filter(c => c.sub === s.id); if (!sl.length) return null
+          <section key={l.id} class="level">
+            <div class="level-head">
+              <span class="level-n mono">{li + 1}</span>
+              <span style="display:flex;flex-direction:column;gap:1px;flex:1;min-width:0"><b style="font-size:15px">{l.name}</b><small class="muted" style="font-size:12px">{l.desc}</small></span>
+              <span class="mono muted" style="font-size:10.5px;white-space:nowrap">{list.length ? `${st}/${list.length} STUDIATE` : 'IN ARRIVO'}</span>
+            </div>
+            {list.length > 0 && <div class="bar"><div style={{ width: (st / list.length * 100) + '%', background: '#6FD3C1' }} /></div>}
+            {areas.map(a => {
+              const al = list.filter(c => c.area === a.id); if (!al.length) return null
+              const seen = al.filter(c => state.value.seen[c.id]).length, sd = al.filter(c => state.value.studied[c.id]).length
+              const subs = index.value.subs.filter(s => s.area === a.id)
+              const isOpen = open === a.id
               return (
-                <div key={s.id} style="display:flex;flex-direction:column;gap:6px">
-                  <div class="mono muted" style="font-size:10.5px;text-transform:uppercase">› {s.name}</div>
-                  <div class="chips">{sl.map(c => <a key={c.id} href={'#/t/' + c.id} class="chip" style={'text-decoration:none;' + (state.value.seen[c.id] ? `border-color:${a.color}55;color:#ECEEF3` : 'border-style:dashed;background:transparent')}>{c.name}</a>)}</div>
+                <div key={a.id} class="card area-card" style={isOpen ? `border-color:${a.color}` : ''}>
+                  <button onClick={() => setOpen(isOpen ? null : a.id)} aria-expanded={isOpen} style="all:unset;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px">
+                    <span style="display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600"><span class="dot" style={{ width: '10px', height: '10px', background: a.color }} />{a.name}</span>
+                    <span class="mono muted" style="font-size:10.5px;white-space:nowrap">{seen}/{al.length} VISTE · {sd} ✓</span>
+                  </button>
+                  <div class="bar"><div style={{ width: (seen / al.length * 100) + '%', background: a.color }} /></div>
+                  {isOpen && subs.map(s => {
+                    const sl = al.filter(c => c.sub === s.id); if (!sl.length) return null
+                    return (
+                      <div key={s.id} style="display:flex;flex-direction:column;gap:6px">
+                        <div class="mono muted" style="font-size:10.5px;text-transform:uppercase">› {s.name}</div>
+                        <div class="chips">{sl.map(c => <a key={c.id} href={'#/t/' + c.id} class="chip" style={'text-decoration:none;' + (state.value.seen[c.id] ? `border-color:${a.color}55;color:#ECEEF3` : 'border-style:dashed;background:transparent')}>{state.value.studied[c.id] && <span style="color:#6FD3C1">✓ </span>}{c.name}</a>)}</div>
+                      </div>
+                    )
+                  })}
                 </div>
               )
             })}
-          </div>
+          </section>
         )
       })}
     </div>

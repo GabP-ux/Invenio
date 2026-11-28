@@ -20,6 +20,24 @@ areas = [
     {"id": "pmic", "name": "Circuiti integrati – gestione dell'alimentazione", "color": "#F5A65B", "pack": "alimentazione"},
     {"id": "convertitori", "name": "Alimentatori da scheda (convertitori DC-DC)", "color": "#D98CF0", "pack": "alimentazione"},
     {"id": "batterie", "name": "Batterie e accessori", "color": "#7FD08A", "pack": "alimentazione"},
+    {"id": "fondamenti", "name": "Concetti di base", "color": "#FFD27A", "pack": "fondamenti"},
+    {"id": "strumenti", "name": "Strumenti di misura e saldatura", "color": "#9AD0F5", "pack": "fondamenti"},
+    {"id": "trasformatori", "name": "Trasformatori", "color": "#C7A66B", "pack": "fondamenti"},
+]
+
+# Percorso: i livelli in ordine logico (vedi docs/percorso.md). Ogni area appartiene a un livello.
+levels = [
+    {"id": "l1", "name": "Fondamenti", "desc": "Che cosa scorre nei fili", "areas": ["fondamenti"]},
+    {"id": "l2", "name": "Strumenti", "desc": "Misurare, montare, riparare", "areas": ["strumenti"]},
+    {"id": "l3", "name": "Componenti passivi", "desc": "I mattoni di ogni circuito", "areas": ["resistori", "potenziometri", "condensatori", "induttori", "trasformatori", "cristalli", "protezione", "interruttori"]},
+    {"id": "l4", "name": "Semiconduttori", "desc": "Valvole e rubinetti della corrente", "areas": ["semiconduttori", "opto"]},
+    {"id": "l5", "name": "Collegare", "desc": "Fili, connettori e basette", "areas": ["connettori", "cavi", "prototipazione"]},
+    {"id": "l6", "name": "Alimentare", "desc": "Batterie, regolatori, convertitori", "areas": ["pmic", "convertitori", "batterie"]},
+    {"id": "l7", "name": "Sentire", "desc": "Sensori che misurano il mondo", "areas": ["sensori"]},
+    {"id": "l8", "name": "Muovere", "desc": "Motori, attuatori, suono e calore", "areas": ["motori", "audio", "termico"]},
+    {"id": "l9", "name": "Pensare", "desc": "Microcontrollori: il cervello", "areas": []},
+    {"id": "l10", "name": "Comunicare", "desc": "Fili seriali e onde radio", "areas": ["rf"]},
+    {"id": "l11", "name": "Mostrare", "desc": "Display, luci e audio", "areas": []},
 ]
 # Sottocategorie ricalcate sull'alberatura dei cataloghi dei distributori (es. DigiKey)
 subs = {
@@ -73,6 +91,12 @@ subs = {
     "ricaricabili": ("batterie", "Batterie ricaricabili"),
     "pile": ("batterie", "Batterie non ricaricabili (pile)"),
     "celle-solari": ("opto", "Celle solari"),
+    "concetti": ("fondamenti", "Elettricità di base"),
+    "misura": ("strumenti", "Strumenti di misura"),
+    "saldatura": ("strumenti", "Saldatura e attrezzi"),
+    "alimentatori-banco": ("strumenti", "Alimentatori da banco"),
+    "trasformatori-rete": ("trasformatori", "Trasformatori di alimentazione"),
+    "pulsanti": ("interruttori", "Pulsanti e interruttori"),
 }
 principles = [
     {"id": "tempo-di-volo", "name": "Tempo di volo", "text": "Si misura quanto tempo impiega un segnale a viaggiare. Conoscendo la sua velocità si ricava la distanza.", "source": {"title": "Wikipedia – Time of flight", "url": "https://en.wikipedia.org/wiki/Time_of_flight"}},
@@ -111,4 +135,9 @@ principles = [
     {"id": "commutazione", "name": "Conversione a commutazione", "text": "Un interruttore elettronico si apre e si chiude migliaia di volte al secondo; una bobina e un condensatore immagazzinano e restituiscono l'energia. Cambiando quanto tempo resta chiuso si sceglie la tensione d'uscita, quasi senza sprecare energia.", "source": {"title": "Wikipedia – Switched-mode power supply", "url": "https://en.wikipedia.org/wiki/Switched-mode_power_supply"}},
     {"id": "pila-elettrochimica", "name": "Pila elettrochimica", "text": "Due materiali diversi immersi in un elettrolita: uno cede elettroni, l'altro li accetta. Gli elettroni fanno il giro nel circuito esterno, gli ioni chiudono il percorso dentro la pila.", "source": {"title": "Wikipedia – Cella galvanica", "url": "https://it.wikipedia.org/wiki/Cella_galvanica"}},
     {"id": "carica-cc-cv", "name": "Carica a corrente e tensione costanti", "text": "Le batterie al litio si caricano prima con una corrente fissa finché la tensione arriva al massimo (4,2 V per cella), poi tenendo fissa la tensione mentre la corrente cala da sola.", "source": {"title": "Wikipedia – Lithium-ion battery", "url": "https://en.wikipedia.org/wiki/Lithium-ion_battery"}},
+    {"id": "circuito-chiuso", "name": "Circuito chiuso", "text": "La corrente scorre solo se c'è un percorso completo dal polo + al polo − del generatore. Basta un'interruzione in un punto e si ferma dappertutto.", "source": {"title": "Wikipedia – Circuito elettrico", "url": "https://it.wikipedia.org/wiki/Circuito_elettrico"}},
+    {"id": "kirchhoff", "name": "Leggi di Kirchhoff", "text": "In un nodo la corrente che entra è uguale a quella che esce; lungo un giro chiuso le tensioni si compensano. Da qui: in serie la corrente è la stessa, in parallelo la tensione è la stessa.", "source": {"title": "Wikipedia – Leggi di Kirchhoff", "url": "https://it.wikipedia.org/wiki/Leggi_di_Kirchhoff"}},
+    {"id": "induzione", "name": "Induzione elettromagnetica", "text": "Un campo magnetico che cambia dentro una bobina fa nascere una tensione ai suoi capi. È il principio di generatori, alternatori e trasformatori.", "source": {"title": "Wikipedia – Induzione elettromagnetica", "url": "https://it.wikipedia.org/wiki/Induzione_elettromagnetica"}},
+    {"id": "campionamento", "name": "Campionamento", "text": "Un segnale che varia nel tempo viene misurato tante volte al secondo: la serie di valori lo descrive, purché i campioni siano abbastanza fitti.", "source": {"title": "Wikipedia – Campionamento (teoria dei segnali)", "url": "https://it.wikipedia.org/wiki/Campionamento_(teoria_dei_segnali)"}},
+    {"id": "saldatura-dolce", "name": "Saldatura dolce", "text": "Una lega che fonde a bassa temperatura scorre tra due metalli caldi e puliti, li \"bagna\" e, raffreddandosi, li unisce in modo che conducano.", "source": {"title": "Wikipedia – Brasatura", "url": "https://it.wikipedia.org/wiki/Brasatura"}},
 ]

@@ -1,4 +1,4 @@
-import { useState } from 'preact/hooks'
+import { useEffect, useRef, useState } from 'preact/hooks'
 import { route } from '../router'
 
 const S = { fill: 'none', stroke: 'currentColor', 'stroke-width': 1.8, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'aria-hidden': 'true' }
@@ -12,6 +12,8 @@ export const Icon = {
   folder: () => <svg width="20" height="20" viewBox="0 0 24 24" {...S} stroke="#8FA8FF"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /></svg>,
   plus: () => <svg width="16" height="16" viewBox="0 0 24 24" {...S} stroke-width="2"><path d="M12 5v14M5 12h14" /></svg>,
   more: () => <svg width="22" height="22" viewBox="0 0 24 24" {...S}><circle cx="5" cy="12" r="1.3" /><circle cx="12" cy="12" r="1.3" /><circle cx="19" cy="12" r="1.3" /></svg>,
+  gear: () => <svg width="22" height="22" viewBox="0 0 24 24" {...S}><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z" /></svg>,
+  check: (p = {}) => <svg width={p.s || 18} height={p.s || 18} viewBox="0 0 24 24" {...S} stroke-width="2.4"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>,
   logo: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8FA8FF" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3" /><circle cx="12" cy="12" r="9" stroke-opacity=".4" /></svg>
 }
 
@@ -45,4 +47,11 @@ export function Back ({ to = 'feed', label = 'Indietro' }) {
       <Icon.back />{label}
     </button>
   )
+}
+
+// Foglio dal basso (dialog nativo)
+export function Sheet ({ open, onClose, children, label }) {
+  const ref = useRef()
+  useEffect(() => { const d = ref.current; if (!d) return; if (open && !d.open) d.showModal(); if (!open && d.open) d.close() }, [open])
+  return <dialog ref={ref} class="sheet-dlg" aria-label={label} onClose={onClose} onClick={(e) => { if (e.target === ref.current) onClose() }}><div class="dlg">{children}</div></dialog>
 }

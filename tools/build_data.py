@@ -19,6 +19,7 @@ PACKS = [  # ordine dei pacchetti: id, nome mostrato
     ("connettori", "Connettori e cablaggi"),
     ("ambiente", "Sensori ambientali"),
     ("alimentazione", "Alimentazione"),
+    ("fondamenti", "Fondamenti e strumenti"),
 ]
 OUT = os.path.join(os.path.dirname(__file__), '..', 'public', 'data')
 
@@ -102,7 +103,7 @@ if __name__ == "__main__":
         json.dump({"pack": pid, "cards": cards}, open(os.path.join(OUT, f"{pid}.json"), "w"), ensure_ascii=False, separators=(",", ":"))
         packs.append({"id": pid, "name": name, "file": f"{pid}.json", "count": len(cards)})
         print(f"{pid}: {len(cards)} schede, {os.path.getsize(os.path.join(OUT, pid + '.json'))} byte")
-    index = {"version": 2, "areas": indice.areas,
+    index = {"version": 2, "areas": indice.areas, "levels": indice.levels,
              "subs": [{"id": k, "area": v[0], "name": v[1]} for k, v in indice.subs.items()],
              "principles": indice.principles, "packs": packs}
     json.dump(index, open(os.path.join(OUT, "index.json"), "w"), ensure_ascii=False, separators=(",", ":"))

@@ -1,9 +1,8 @@
 // Schemi dell'alimentazione. Regole: skill "invenio-schemi".
 import { useEffect, useState } from 'preact/hooks'
-import { K, Svg, Lbl, Wire, Flow, Electrons, Battery, Lamp, Fig, Seg, Slider, Readout, useAuto } from './kit'
+import { calm, K, Svg, Lbl, Wire, Flow, Electrons, Battery, Lamp, Fig, Seg, Slider, Readout, useAuto } from './kit'
 import './alimentazione.css'
 
-const reduced = typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches
 const f1 = (v) => v.toFixed(1).replace('.', ',')
 const f2 = (v) => v.toFixed(2).replace('.', ',')
 const vzig = (x, y, len) => { let d = `M${x} ${y}`; const n = 6, st = len / n; for (let i = 0; i < n; i++) d += ` L${x - 6} ${y + st * i + st / 4} L${x + 6} ${y + st * i + 3 * st / 4}`; return d + ` L${x} ${y + len}` }
@@ -26,7 +25,7 @@ function DiodeSeg ({ x1, y1, x2, y2, on = true, s = 7 }) {
 function useSwitch (D) {
   const [on, setOn] = useState(true)
   useEffect(() => {
-    if (reduced) { setOn(true); return }
+    if (calm()) { setOn(true); return }
     let alive = true, t
     const step = (v) => { if (!alive) return; setOn(v); t = setTimeout(() => step(!v), (v ? D : 1 - D) * 2400) }
     step(true)
@@ -135,7 +134,7 @@ const T = [140, 45], B = [140, 145], L = [90, 95], R = [190, 95]
 export function PonteRaddrizzatore ({ mode }) {
   const [c, setC] = useAuto(mode, [false, true], 4800)
   const [h, setH] = useState(0)
-  useEffect(() => { if (reduced) return; const t = setInterval(() => setH(v => 1 - v), 1300); return () => clearInterval(t) }, [])
+  useEffect(() => { if (calm()) return; const t = setInterval(() => setH(v => 1 - v), 1300); return () => clearInterval(t) }, [])
   const p1 = 'M42 95 H90 L140 45 H260 V170 H140 V145 L190 95 H230 V12 H30 V83'
   const p2 = 'M30 83 V12 H230 V95 H190 L140 45 H260 V170 H140 V145 L90 95 H42'
   // grafico: due periodi, uscita raddrizzata o livellata (costante di scarica illustrativa)

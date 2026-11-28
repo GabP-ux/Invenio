@@ -28,3 +28,9 @@ export const breadcrumb = (c) => {
   return [a?.name, s?.name].filter(Boolean).join(' › ')
 }
 export const areaColor = (c) => areaById.value[c.area]?.color || '#F0B44C'
+
+// Livello del percorso (0 = Fondamenti …) a cui appartiene l'area di una scheda
+export const levelIndexOfArea = computed(() => {
+  const m = {}; (index.value?.levels || []).forEach((l, i) => l.areas.forEach(a => { m[a] = i })); return m
+})
+export const levelOf = (c) => levelIndexOfArea.value[c.area] ?? 99

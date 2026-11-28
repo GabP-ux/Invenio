@@ -18,7 +18,8 @@ export const K = {
   wire: '#5A6378', part: '#3A4050', body: '#161B25', text: '#A0A7B4', ink: '#ECEEF3'
 }
 export const T = { fontFamily: 'JetBrains Mono, monospace' }
-const reduced = typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches
+// animazioni ridotte: dal sistema operativo o dall'impostazione dell'app
+export const calm = () => (typeof document !== 'undefined' && document.documentElement.classList.contains('calm')) || (typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches)
 
 export const Svg = ({ w = 336, h = 180, label, children }) =>
   <svg viewBox={`0 0 ${w} ${h}`} role="img" aria-label={label}>{children}</svg>
@@ -106,7 +107,7 @@ export const Readout = ({ items }) => (
 export function useAuto (mode, values, ms = 2200) {
   const [v, setV] = useState(values[0])
   useEffect(() => {
-    if (mode !== 'auto' || reduced) return
+    if (mode !== 'auto' || calm()) return
     let i = 0
     const t = setInterval(() => { i = (i + 1) % values.length; setV(values[i]) }, ms)
     return () => clearInterval(t)
