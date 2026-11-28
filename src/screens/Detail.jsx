@@ -3,8 +3,9 @@ import { byId, breadcrumb, areaColor, principleById } from '../data'
 import { state, markSeen, toggleSave, toggleStudied } from '../store'
 import { VIS, Visual } from '../diagrams/registry'
 import { Icon, WImg, Crumb, Back } from '../components/ui'
+import { PathNav } from './Paths'
 
-export function Detail ({ id }) {
+export function Detail ({ id, path }) {
   const c = byId.value[id]
   useEffect(() => { if (c) { markSeen(c.id); document.querySelector('.detail-scroll')?.scrollTo(0, 0) } }, [id])
   if (!c) return <div class="screen"><div class="topbar"><Back /></div><div class="empty">Scheda non trovata.</div></div>
@@ -99,6 +100,7 @@ export function Detail ({ id }) {
           )}
 
           <Studied id={c.id} />
+          {path && <PathNav pathId={path} cardId={c.id} />}
           <a class="btn" style="border-color:#8FA8FF;color:#8FA8FF" href={'#/mappa/' + c.id}><Icon.map s={18} />Vedi sulla mappa</a>
           <div style="font-size:12px;color:#A0A7B4;border-top:1px solid var(--line-soft);padding-top:14px">
             Testo basato su: <a href={c.source.url} target="_blank" rel="noopener">{c.source.title}</a>

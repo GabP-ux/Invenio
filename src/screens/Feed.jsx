@@ -3,6 +3,7 @@ import { cards, breadcrumb, areaColor, levelOf } from '../data'
 import { state, markSeen, toggleSave } from '../store'
 import { VIS, Visual } from '../diagrams/registry'
 import { Icon, WImg, Crumb } from '../components/ui'
+import { PathList } from './Paths'
 
 const PACK = 5
 
@@ -68,30 +69,36 @@ export function Feed () {
   // l'ordine si calcola una volta sola, così le schede non si spostano mentre scorri
   const order = useMemo(() => dailyOrder(cards.value, state.value.seen, state.value.settings.feedOrder), [cards.value.length, state.value.settings.feedOrder])
   const [toast, setToast] = useState(0)
+  const [tab, setTabS] = useState(() => { try { return localStorage.getItem('feedTab') || 'feed' } catch (e) { return 'feed' } })
+  const setTab = (t) => { setTabS(t); try { localStorage.setItem('feedTab', t) } catch (e) {} }
   const today = order.slice(0, PACK)
   const seenToday = today.filter(c => state.value.seen[c.id]).length
   return (
     <div class="screen">
-      <header style="padding:14px 20px 8px;display:flex;flex-direction:column;gap:10px">
-        <div style="display:flex;align-items:center;justify-content:space-between">
-          <span style="display:flex;align-items:center;gap:8px;font-family:var(--display);font-size:22px;font-weight:700;letter-spacing:-.5px"><Icon.logo />invenio</span>
-          <span style="display:flex;align-items:center;gap:6px">
-            <span class="mono muted" style="font-size:11px">OGGI · {seenToday}/{today.length}</span>
-            <a class="icon-btn" href="#/impostazioni" aria-label="Impostazioni" style="color:#A0A7B4"><Icon.gear /></a>
-          </span>
+      <header style="padding:10px 16px 6px;display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+          <span style="display:flex;align-items:center;gap:6px;font-family:var(--display);font-size:20px;font-weight:700;letter-spacing:-.5px"><Icon.logo />invenio</span>
+          <div class="seg seg-mini" role="group" aria-label="Come vuoi imparare">
+            <button aria-pressed={tab === 'feed'} onClick={() => setTab('feed')}>Per te</button>
+            <button aria-pressed={tab === 'paths'} onClick={() => setTab('paths')}>Percorsi</button>
+          </div>
+          <a class="icon-btn" href="#/impostazioni" aria-label="Impostazioni" style="color:#A0A7B4"><Icon.gear /></a>
         </div>
-        <div class="progress" style={{ gridTemplateColumns: `repeat(${today.length},1fr)` }} aria-hidden="true">
-          {today.map((c) => <div key={c.id} class={state.value.seen[c.id] ? 'on' : ''} />)}
-        </div>
+        {tab === 'feed' && <div style="display:flex;align-items:center;gap:10px">
+          <div class="progress" style={{ gridTemplateColumns: `repeat(${today.length},1fr)`, flex: 1 }} aria-hidden="true">
+            {today.map((c) => <div key={c.id} class={state.value.seen[c.id] ? 'on' : ''} />)}
+          </div>
+          <span class="mono muted" style="font-size:10.5px;white-space:nowrap">OGGI {seenToday}/{today.length}</span>
+        </div>}
       </header>
-      <main class="feed hide-sb">
+      {tab === 'paths' ? <PathList /> : <main class="feed hide-sb">
         {order.map((c, i) => <FeedItem key={c.id} c={c} next={order[i + 1]?.name} onSaved={() => setToast(Date.now())} />)}
         <section class="feed-item"><div class="card feed-card" style="align-items:center;justify-content:center;text-align:center">
           <h2>Hai visto tutto, per ora</h2>
           <p>Nuove schede arriveranno con i prossimi pacchetti. Intanto ripassa con il quiz o esplora la mappa.</p>
           <div style="display:flex;gap:8px"><a class="btn primary" href="#/quiz">Vai al quiz</a><a class="btn" href="#/mappa">Mappa</a></div>
         </div></section>
-      </main>
+      </main>}
       {toast > 0 && <div class="toast" key={toast} role="status">Salvato in "Senza cartella" <a href="#/salvati">Scegli cartella</a></div>}
     </div>
   )

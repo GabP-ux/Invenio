@@ -10,6 +10,7 @@ import * as Am from './ambiente'
 import * as Al from './alimentazione'
 import * as Fo from './fondamenti'
 import * as Ce from './cervello'
+import * as S2 from './semiconduttori2'
 
 const anim = (A, cap, Sim) => ({ C: ({ mode }) => (mode === 'play' && Sim) ? <Sim /> : <Fig caption={cap}><A /></Fig>, interactive: !!Sim })
 const vis = (C, interactive = false) => ({ C, interactive })
@@ -96,6 +97,11 @@ export const VIS = {
   spi: vis(Ce.Spi, true),
   esp32: vis(Ce.Esp32, true),
   'led-indirizzabili': vis(Ce.LedIndirizzabili, true),
+  zener: vis(S2.Zener, true),
+  optoaccoppiatore: vis(S2.Optoaccoppiatore, true),
+  'amplificatore-operazionale': vis(S2.AmplificatoreOperazionale, true),
+  'timer-555': vis(S2.Timer555, true),
+  'porte-logiche': vis(S2.PorteLogiche, true),
 }
 
 export function Visual ({ k, mode }) {

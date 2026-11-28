@@ -26,6 +26,7 @@ areas = [
     {"id": "mcu", "name": "Microcontrollori e periferiche", "color": "#7FE0D0", "pack": "cervello"},
     {"id": "interfacce", "name": "Interfacce e protocolli di comunicazione", "color": "#A9B8FF", "pack": "cervello"},
     {"id": "display", "name": "Display e LED indirizzabili", "color": "#FF9FD0", "pack": "cervello"},
+    {"id": "circuiti-integrati", "name": "Circuiti integrati: amplificatori, timer e logica", "color": "#C3A6FF", "pack": "semiconduttori2"},
 ]
 
 # Percorso: i livelli in ordine logico (vedi docs/percorso.md). Ogni area appartiene a un livello.
@@ -33,7 +34,7 @@ levels = [
     {"id": "l1", "name": "Fondamenti", "desc": "Che cosa scorre nei fili", "areas": ["fondamenti"]},
     {"id": "l2", "name": "Strumenti", "desc": "Misurare, montare, riparare", "areas": ["strumenti"]},
     {"id": "l3", "name": "Componenti passivi", "desc": "I mattoni di ogni circuito", "areas": ["resistori", "potenziometri", "condensatori", "induttori", "trasformatori", "cristalli", "protezione", "interruttori"]},
-    {"id": "l4", "name": "Semiconduttori", "desc": "Valvole e rubinetti della corrente", "areas": ["semiconduttori", "opto"]},
+    {"id": "l4", "name": "Semiconduttori", "desc": "Valvole e rubinetti della corrente", "areas": ["semiconduttori", "opto", "circuiti-integrati"]},
     {"id": "l5", "name": "Collegare", "desc": "Fili, connettori e basette", "areas": ["connettori", "cavi", "prototipazione"]},
     {"id": "l6", "name": "Alimentare", "desc": "Batterie, regolatori, convertitori", "areas": ["pmic", "convertitori", "batterie"]},
     {"id": "l7", "name": "Sentire", "desc": "Sensori che misurano il mondo", "areas": ["sensori"]},
@@ -105,6 +106,11 @@ subs = {
     "bus-seriali": ("interfacce", "Bus seriali (UART, I²C, SPI)"),
     "moduli-wifi": ("rf", "Moduli Wi-Fi e Bluetooth"),
     "led-indirizzabili": ("display", "LED indirizzabili"),
+    "diodi-zener": ("semiconduttori", "Diodi Zener"),
+    "optoisolatori": ("opto", "Optoisolatori"),
+    "amplificatori": ("circuiti-integrati", "Amplificatori operazionali"),
+    "timer": ("circuiti-integrati", "Timer e oscillatori"),
+    "logica": ("circuiti-integrati", "Porte logiche"),
 }
 principles = [
     {"id": "tempo-di-volo", "name": "Tempo di volo", "text": "Si misura quanto tempo impiega un segnale a viaggiare. Conoscendo la sua velocità si ricava la distanza.", "source": {"title": "Wikipedia – Time of flight", "url": "https://en.wikipedia.org/wiki/Time_of_flight"}},
@@ -153,4 +159,7 @@ principles = [
     {"id": "modulazione-pwm", "name": "Modulazione a larghezza d'impulso", "text": "Un'uscita che si accende e si spegne molto in fretta: cambiando la frazione di tempo in cui è accesa si cambia la potenza media che arriva al carico.", "source": {"title": "Wikipedia – Modulazione di larghezza d'impulso", "url": "https://it.wikipedia.org/wiki/Modulazione_di_larghezza_d%27impulso"}},
     {"id": "trasmissione-seriale", "name": "Trasmissione seriale", "text": "I bit di un dato viaggiano uno dopo l'altro sullo stesso filo. Chi trasmette e chi riceve si accordano sui tempi: con una velocità fissata in anticipo oppure con un filo di clock che scandisce ogni bit.", "source": {"title": "Wikipedia – Comunicazione seriale", "url": "https://it.wikipedia.org/wiki/Comunicazione_seriale"}},
     {"id": "onde-radio", "name": "Onde radio", "text": "Una corrente che oscilla molto in fretta in un'antenna irradia onde elettromagnetiche; un'altra antenna le capta e ne ricava di nuovo una piccola corrente.", "source": {"title": "Wikipedia – Onde radio", "url": "https://it.wikipedia.org/wiki/Onde_radio"}},
+    {"id": "effetto-zener", "name": "Rottura controllata (effetto Zener)", "text": "Un diodo polarizzato al contrario non conduce, finché la tensione non supera una soglia precisa: da lì conduce e tiene la tensione quasi ferma a quel valore.", "source": {"title": "Wikipedia – Diodo Zener", "url": "https://it.wikipedia.org/wiki/Diodo_Zener"}},
+    {"id": "confronto-soglie", "name": "Comparatore", "text": "Un circuito confronta due tensioni e dice quale è più alta: la sua uscita scatta tutta in alto o tutta in basso. È il mattone di timer, allarmi e termostati.", "source": {"title": "Wikipedia – Comparatore", "url": "https://it.wikipedia.org/wiki/Comparatore"}},
+    {"id": "logica-booleana", "name": "Logica booleana", "text": "Con due soli valori, vero (1) e falso (0), e poche operazioni (E, O, NON) si costruisce qualsiasi decisione: dai semafori ai processori.", "source": {"title": "Wikipedia – Porta logica", "url": "https://it.wikipedia.org/wiki/Porta_logica"}},
 ]

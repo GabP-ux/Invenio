@@ -21,6 +21,7 @@ PACKS = [  # ordine dei pacchetti: id, nome mostrato
     ("alimentazione", "Alimentazione"),
     ("fondamenti", "Fondamenti e strumenti"),
     ("cervello", "Pensare e comunicare"),
+    ("semiconduttori2", "Semiconduttori e circuiti integrati"),
 ]
 OUT = os.path.join(os.path.dirname(__file__), '..', 'public', 'data')
 
@@ -94,6 +95,11 @@ if __name__ == "__main__":
     import indice
     load_content()
     errors, unused = check(indice)
+    import percorsi
+    ids = {c["id"] for c in lib.CARDS}
+    for pth in percorsi.paths:
+        for cid, why in pth["steps"]:
+            if cid not in ids: errors.append(f'percorso {pth["id"]}: la scheda "{cid}" non esiste')
     if errors:
         print("ERRORI:", *errors, sep="\n  ")
         sys.exit(1)
@@ -104,7 +110,7 @@ if __name__ == "__main__":
         json.dump({"pack": pid, "cards": cards}, open(os.path.join(OUT, f"{pid}.json"), "w"), ensure_ascii=False, separators=(",", ":"))
         packs.append({"id": pid, "name": name, "file": f"{pid}.json", "count": len(cards)})
         print(f"{pid}: {len(cards)} schede, {os.path.getsize(os.path.join(OUT, pid + '.json'))} byte")
-    index = {"version": 2, "areas": indice.areas, "levels": indice.levels,
+    index = {"version": 2, "areas": indice.areas, "levels": indice.levels, "paths": percorsi.paths,
              "subs": [{"id": k, "area": v[0], "name": v[1]} for k, v in indice.subs.items()],
              "principles": indice.principles, "packs": packs}
     json.dump(index, open(os.path.join(OUT, "index.json"), "w"), ensure_ascii=False, separators=(",", ":"))
