@@ -1,4 +1,8 @@
 {
+ "12664-01a.jpg": {
+  "artist": "SparkFun Electronics",
+  "license": "CC BY 2.0"
+ },
  "18650 and 21700 lithium ion battery cell.jpg": {
   "artist": "Sevenethics",
   "license": "CC0"
@@ -32,6 +36,10 @@
   "license": "CC0"
  },
  "A few Jumper Wires.jpg": {
+  "artist": "oomlout",
+  "license": "CC BY-SA 2.0"
+ },
+ "ATMEGA328P-PU.jpg": {
   "artist": "oomlout",
   "license": "CC BY-SA 2.0"
  },
@@ -111,6 +119,10 @@
   "artist": "Journey234",
   "license": "pubblico dominio"
  },
+ "ESP32-C3 with Traffic Light Module from Above.jpg": {
+  "artist": "DavesCodeMusings",
+  "license": "CC0"
+ },
  "Electrolytic capacitors-P1090328.JPG": {
   "artist": "Elcap",
   "license": "CC0"
@@ -118,6 +130,10 @@
  "Electronic-Axial-Lead-Resistors-Array.jpg": {
   "artist": "Evan-Amos",
   "license": "pubblico dominio"
+ },
+ "Espressif ESP-WROOM-32 Wi-Fi & Bluetooth Module.jpg": {
+  "artist": "Brian Krent",
+  "license": "CC BY-SA 4.0"
  },
  "Female-Female Jumper Wire.jpg": {
   "artist": "oomlout",
@@ -171,6 +187,10 @@
   "artist": "Martin Meise",
   "license": "CC BY-SA 3.0"
  },
+ "I2C analyze.jpg": {
+  "artist": "Martinfred",
+  "license": "CC BY-SA 4.0"
+ },
  "JST CZH hand crimper tool.jpg": {
   "artist": "4300streetcar",
   "license": "CC BY 4.0"
@@ -191,6 +211,10 @@
   "artist": "Retired electrician",
   "license": "CC0"
  },
+ "Linear AD converter ideal characteristic.png": {
+  "artist": "Luca Ghio",
+  "license": "CC BY-SA 3.0"
+ },
  "Linear actuator photo.jpg": {
   "artist": "Rsteves00",
   "license": "attribuzione"
@@ -210,6 +234,10 @@
  "Memory Spring Quadrat.jpg": {
   "artist": "DaniSMI",
   "license": "CC BY-SA 4.0"
+ },
+ "NS16550AFN UART chip.jpg": {
+  "artist": "hmvh",
+  "license": "CC0"
  },
  "NTC Thermistor.jpg": {
   "artist": "Soumyapatra13",
@@ -251,12 +279,20 @@
   "artist": "Stefan Riepl (Quark48)",
   "license": "CC BY-SA 2.0 de"
  },
+ "Pwm 5steps.gif": {
+  "artist": "The arduino.cc team",
+  "license": "CC BY-SA 3.0"
+ },
  "RG-6 coaxial cable.png": {
   "artist": "User",
   "license": "CC BY-SA 3.0"
  },
  "RIGOL DS1054Z Digital Storage Oscilloscope.jpg": {
   "artist": "Draconichiaro",
+  "license": "CC BY-SA 4.0"
+ },
+ "Raspberry Pi Pico oblique.jpg": {
+  "artist": "Phiarc",
   "license": "CC BY-SA 4.0"
  },
  "Rotary Encoder.jpg": {
@@ -282,6 +318,10 @@
  "Sensirion CO2 Humidity and Temperature Sensor - SCD30 15112.jpg": {
   "artist": "SparkFun",
   "license": "CC BY 2.0"
+ },
+ "Serial Peripheral Interface Animation.gif": {
+  "artist": "Adem Güdük",
+  "license": "CC BY 4.0"
  },
  "Servo motor 1530625.JPG": {
   "artist": "Nevit Dilmen",
@@ -362,6 +402,10 @@
  "WAGO 221.jpg": {
   "artist": "im_tau",
   "license": "CC0"
+ },
+ "WS2812Closeup1.jpg": {
+  "artist": "Daniele Napolitano",
+  "license": "CC BY-SA 4.0"
  },
  "XL4015-based CC-CV buck converter modules 01.jpg": {
   "artist": "Retired electrician",

@@ -9,6 +9,7 @@ import * as Cn from './connettori'
 import * as Am from './ambiente'
 import * as Al from './alimentazione'
 import * as Fo from './fondamenti'
+import * as Ce from './cervello'
 
 const anim = (A, cap, Sim) => ({ C: ({ mode }) => (mode === 'play' && Sim) ? <Sim /> : <Fig caption={cap}><A /></Fig>, interactive: !!Sim })
 const vis = (C, interactive = false) => ({ C, interactive })
@@ -87,6 +88,14 @@ export const VIS = {
   saldatore: vis(Fo.Saldatore, true),
   pulsante: vis(Fo.Pulsante, true),
   'alimentatore-banco': vis(Fo.AlimentatoreBanco, true),
+  microcontrollore: vis(Ce.Microcontrollore, true),
+  adc: vis(Ce.Adc, true),
+  pwm: vis(Ce.Pwm, true),
+  uart: vis(Ce.Uart, true),
+  i2c: vis(Ce.I2c, true),
+  spi: vis(Ce.Spi, true),
+  esp32: vis(Ce.Esp32, true),
+  'led-indirizzabili': vis(Ce.LedIndirizzabili, true),
 }
 
 export function Visual ({ k, mode }) {

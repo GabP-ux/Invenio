@@ -20,6 +20,7 @@ PACKS = [  # ordine dei pacchetti: id, nome mostrato
     ("ambiente", "Sensori ambientali"),
     ("alimentazione", "Alimentazione"),
     ("fondamenti", "Fondamenti e strumenti"),
+    ("cervello", "Pensare e comunicare"),
 ]
 OUT = os.path.join(os.path.dirname(__file__), '..', 'public', 'data')
 

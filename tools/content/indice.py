@@ -23,6 +23,9 @@ areas = [
     {"id": "fondamenti", "name": "Concetti di base", "color": "#FFD27A", "pack": "fondamenti"},
     {"id": "strumenti", "name": "Strumenti di misura e saldatura", "color": "#9AD0F5", "pack": "fondamenti"},
     {"id": "trasformatori", "name": "Trasformatori", "color": "#C7A66B", "pack": "fondamenti"},
+    {"id": "mcu", "name": "Microcontrollori e periferiche", "color": "#7FE0D0", "pack": "cervello"},
+    {"id": "interfacce", "name": "Interfacce e protocolli di comunicazione", "color": "#A9B8FF", "pack": "cervello"},
+    {"id": "display", "name": "Display e LED indirizzabili", "color": "#FF9FD0", "pack": "cervello"},
 ]
 
 # Percorso: i livelli in ordine logico (vedi docs/percorso.md). Ogni area appartiene a un livello.
@@ -35,9 +38,9 @@ levels = [
     {"id": "l6", "name": "Alimentare", "desc": "Batterie, regolatori, convertitori", "areas": ["pmic", "convertitori", "batterie"]},
     {"id": "l7", "name": "Sentire", "desc": "Sensori che misurano il mondo", "areas": ["sensori"]},
     {"id": "l8", "name": "Muovere", "desc": "Motori, attuatori, suono e calore", "areas": ["motori", "audio", "termico"]},
-    {"id": "l9", "name": "Pensare", "desc": "Microcontrollori: il cervello", "areas": []},
-    {"id": "l10", "name": "Comunicare", "desc": "Fili seriali e onde radio", "areas": ["rf"]},
-    {"id": "l11", "name": "Mostrare", "desc": "Display, luci e audio", "areas": []},
+    {"id": "l9", "name": "Pensare", "desc": "Microcontrollori: il cervello", "areas": ["mcu"]},
+    {"id": "l10", "name": "Comunicare", "desc": "Fili seriali e onde radio", "areas": ["interfacce", "rf"]},
+    {"id": "l11", "name": "Mostrare", "desc": "Display, luci e audio", "areas": ["display"]},
 ]
 # Sottocategorie ricalcate sull'alberatura dei cataloghi dei distributori (es. DigiKey)
 subs = {
@@ -97,6 +100,11 @@ subs = {
     "alimentatori-banco": ("strumenti", "Alimentatori da banco"),
     "trasformatori-rete": ("trasformatori", "Trasformatori di alimentazione"),
     "pulsanti": ("interruttori", "Pulsanti e interruttori"),
+    "microcontrollori": ("mcu", "Microcontrollori"),
+    "periferiche": ("mcu", "Periferiche: ADC e PWM"),
+    "bus-seriali": ("interfacce", "Bus seriali (UART, I²C, SPI)"),
+    "moduli-wifi": ("rf", "Moduli Wi-Fi e Bluetooth"),
+    "led-indirizzabili": ("display", "LED indirizzabili"),
 }
 principles = [
     {"id": "tempo-di-volo", "name": "Tempo di volo", "text": "Si misura quanto tempo impiega un segnale a viaggiare. Conoscendo la sua velocità si ricava la distanza.", "source": {"title": "Wikipedia – Time of flight", "url": "https://en.wikipedia.org/wiki/Time_of_flight"}},
@@ -140,4 +148,9 @@ principles = [
     {"id": "induzione", "name": "Induzione elettromagnetica", "text": "Un campo magnetico che cambia dentro una bobina fa nascere una tensione ai suoi capi. È il principio di generatori, alternatori e trasformatori.", "source": {"title": "Wikipedia – Induzione elettromagnetica", "url": "https://it.wikipedia.org/wiki/Induzione_elettromagnetica"}},
     {"id": "campionamento", "name": "Campionamento", "text": "Un segnale che varia nel tempo viene misurato tante volte al secondo: la serie di valori lo descrive, purché i campioni siano abbastanza fitti.", "source": {"title": "Wikipedia – Campionamento (teoria dei segnali)", "url": "https://it.wikipedia.org/wiki/Campionamento_(teoria_dei_segnali)"}},
     {"id": "saldatura-dolce", "name": "Saldatura dolce", "text": "Una lega che fonde a bassa temperatura scorre tra due metalli caldi e puliti, li \"bagna\" e, raffreddandosi, li unisce in modo che conducano.", "source": {"title": "Wikipedia – Brasatura", "url": "https://it.wikipedia.org/wiki/Brasatura"}},
+    {"id": "programma", "name": "Programma memorizzato", "text": "Un processore legge da una memoria le istruzioni di un programma ed esegue una dopo l'altra, milioni di volte al secondo: leggere un ingresso, fare un calcolo, cambiare un'uscita.", "source": {"title": "Wikipedia – Microcontrollore", "url": "https://it.wikipedia.org/wiki/Microcontrollore"}},
+    {"id": "quantizzazione", "name": "Quantizzazione", "text": "Una grandezza continua viene tradotta in un numero intero scelto tra un numero finito di gradini: con 10 bit i gradini sono 1024.", "source": {"title": "Wikipedia – Quantizzazione (elettronica)", "url": "https://it.wikipedia.org/wiki/Quantizzazione_(elettronica)"}},
+    {"id": "modulazione-pwm", "name": "Modulazione a larghezza d'impulso", "text": "Un'uscita che si accende e si spegne molto in fretta: cambiando la frazione di tempo in cui è accesa si cambia la potenza media che arriva al carico.", "source": {"title": "Wikipedia – Modulazione di larghezza d'impulso", "url": "https://it.wikipedia.org/wiki/Modulazione_di_larghezza_d%27impulso"}},
+    {"id": "trasmissione-seriale", "name": "Trasmissione seriale", "text": "I bit di un dato viaggiano uno dopo l'altro sullo stesso filo. Chi trasmette e chi riceve si accordano sui tempi: con una velocità fissata in anticipo oppure con un filo di clock che scandisce ogni bit.", "source": {"title": "Wikipedia – Comunicazione seriale", "url": "https://it.wikipedia.org/wiki/Comunicazione_seriale"}},
+    {"id": "onde-radio", "name": "Onde radio", "text": "Una corrente che oscilla molto in fretta in un'antenna irradia onde elettromagnetiche; un'altra antenna le capta e ne ricava di nuovo una piccola corrente.", "source": {"title": "Wikipedia – Onde radio", "url": "https://it.wikipedia.org/wiki/Onde_radio"}},
 ]

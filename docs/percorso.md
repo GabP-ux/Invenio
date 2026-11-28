@@ -4,22 +4,22 @@ Il filo logico segue la strada di chi costruisce un oggetto elettronico: **capir
 
 Ogni livello usa quello prima: i sensori hanno senso solo dopo resistenze e partitori, i microcontrollori solo dopo sensori e attuatori, i protocolli solo dopo i microcontrollori. Le categorie dentro ogni livello restano quelle dei cataloghi dei distributori (DigiKey).
 
-Legenda: ✅ già nell'app · 🆕 aggiunto in questa ondata · ⬜ da fare
+Legenda: ✅ già nell'app · ⬜ da fare
 
 ## 1 · Fondamenti — che cosa scorre nei fili
-- 🆕 Tensione e corrente
-- 🆕 Collegamento in serie e in parallelo
-- 🆕 Corrente alternata
+- ✅ Tensione e corrente
+- ✅ Collegamento in serie e in parallelo
+- ✅ Corrente alternata
 - ⬜ Potenza ed energia (watt e wattora)
 - ⬜ Massa e riferimento
 
 ## 2 · Strumenti — misurare, montare, riparare
-- 🆕 Multimetro · 🆕 Oscilloscopio · 🆕 Saldatore · 🆕 Alimentatore da banco
+- ✅ Multimetro · ✅ Oscilloscopio · ✅ Saldatore · ✅ Alimentatore da banco
 - ⬜ Analizzatore logico · ⬜ Basetta millefori e circuito stampato
 
 ## 3 · Componenti passivi
 - ✅ Resistore · ✅ Potenziometro · ✅ Condensatore · ✅ Induttore · ✅ Quarzo · ✅ Fusibile
-- 🆕 Trasformatore · 🆕 Pulsante e interruttore
+- ✅ Trasformatore · ✅ Pulsante e interruttore
 - ⬜ Supercondensatore · ⬜ Ferrite e filtri
 
 ## 4 · Semiconduttori
@@ -42,19 +42,19 @@ Legenda: ✅ già nell'app · 🆕 aggiunto in questa ondata · ⬜ da fare
 - ✅ 14 attuatori (motori DC, BLDC, passo-passo, servo, solenoide, relè, piezo, Peltier, ponte H…)
 - ⬜ Driver per passo-passo (A4988) · ⬜ ESC per motori brushless · ⬜ Ventola · ⬜ Pompa
 
-## 9 · Pensare — elaborazione  ← prossima ondata
-- ⬜ Microcontrollore · ⬜ Convertitore analogico-digitale (ADC) · ⬜ PWM · ⬜ Interrupt e timer · ⬜ Memorie (flash, EEPROM) · ⬜ Computer a scheda singola (Raspberry Pi)
+## 9 · Pensare — elaborazione
+- ✅ Microcontrollore · ✅ Convertitore analogico-digitale (ADC) · ✅ PWM · ⬜ Interrupt e timer · ⬜ Memorie (flash, EEPROM) · ⬜ Computer a scheda singola (Raspberry Pi)
 
 ## 10 · Comunicare
-- ⬜ Seriale UART · ⬜ I²C · ⬜ SPI · ⬜ Wi-Fi e Bluetooth (ESP32) · ⬜ LoRa · ⬜ RFID e NFC
+- ✅ Seriale UART · ✅ I²C · ✅ SPI · ✅ Wi-Fi e Bluetooth (ESP32) · ⬜ LoRa · ⬜ RFID e NFC
 
 ## 11 · Mostrare e suonare — interfacce
-- ⬜ LED indirizzabili (WS2812) · ⬜ Display LCD · ⬜ OLED · ⬜ E-paper · ⬜ Display a 7 segmenti · ⬜ Amplificatore audio in classe D · ⬜ DAC
+- ✅ LED indirizzabili (WS2812) · ⬜ Display LCD · ⬜ OLED · ⬜ E-paper · ⬜ Display a 7 segmenti · ⬜ Amplificatore audio in classe D · ⬜ DAC
 
 ## Ordine delle prossime ondate
-1. **Fondamenti e strumenti** (questa): erano il buco più grande alla base. Tutte le schede già presenti citano tensione, corrente, misure e saldature.
-2. **Pensare + comunicare**: microcontrollore, ADC, PWM, UART, I²C, SPI, ESP32, LED indirizzabili. Collega sensori e attuatori già presenti.
-3. **Semiconduttori 2**: Zener, optoaccoppiatore, amplificatore operazionale, 555, porte logiche.
+1. ✅ **Fondamenti e strumenti**: erano il buco più grande alla base. Tutte le schede già presenti citano tensione, corrente, misure e saldature.
+2. ✅ **Pensare + comunicare**: microcontrollore, ADC, PWM, UART, I²C, SPI, ESP32, LED indirizzabili. Collega sensori e attuatori già presenti.
+3. **Semiconduttori 2** ← prossima: Zener, optoaccoppiatore, amplificatore operazionale, 555, porte logiche.
 4. **Interfacce**: display, e-paper, 7 segmenti, audio (microfono, classe D, DAC).
 5. **Sensori 2 e attuatori 2**: IMU, magnetometro, corrente, touch, cella di carico, IR, driver passo-passo, ESC, ventole e pompe.
 6. **Radio e completamenti**: LoRa, RFID/NFC, BMS, alimentatore da rete, potenza ed energia, massa.

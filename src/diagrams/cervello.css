@@ -1,0 +1,8 @@
+/* UART: la finestra che scorre sui bit della trama */
+@keyframes uartScan{from{transform:translateX(0)}to{transform:translateX(260px)}}
+.uart-scan{animation:uartScan 3s steps(10,end) infinite}
+/* ESP32: onde che si allargano dall'antenna, pacchetto che parte */
+@keyframes espWave{0%{transform:translateX(0) scale(.6);opacity:.9}100%{transform:translateX(90px) scale(1.6);opacity:0}}
+.esp-wave{transform-box:fill-box;transform-origin:0 50%;animation:espWave 1.8s ease-out infinite}
+@keyframes espPkt{0%{transform:translateX(0);opacity:0}15%{opacity:1}85%{opacity:1}100%{transform:translateX(90px);opacity:0}}
+.esp-pkt{animation:espPkt 1.8s linear infinite}
